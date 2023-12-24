@@ -1,5 +1,9 @@
-export default function Projeto() {
-    return (
+import { projetoRequest } from "@/service/Projeto/projeto"
+
+export default async function Projeto() {
+  const projetos = await projetoRequest.read();
+    
+  return (
       <>
         <h1 className="text-3xl font-medium text-zinc-900">Projeto</h1>
         <div className="mt-6 flex flex-col ">
@@ -14,24 +18,22 @@ export default function Projeto() {
               <thead className="bg-violet-200">
                 <tr className="">
                   <th className="text-left py-4 px-5 border-b text-black">Nome</th>
-                  <th className="text-left py-4 px-5 border-b text-black">Email</th>
-                  <th className="text-left py-4 px-5 border-b text-black">Idade</th>
-                  <th className="text-left py-4 px-5 border-b text-black">Role</th>
-                  <th className="text-left py-4 px-5 border-b text-black">Area</th>
-                  <th className="text-left py-4 px-5 border-b text-black">Projeto</th>
+                  <th className="text-left py-4 px-5 border-b text-black">Prazo</th>
+                  <th className="text-left py-4 px-5 border-b text-black">Tecnologia</th>
+                  <th className="text-left py-4 px-5 border-b text-black">Colaborador</th>
                   <th className="text-left py-4 px-5 border-b text-black">Ação</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="hover:bg-gray-100">
-                  <td className="py-4 px-5 border-b text-black font-semibold">Danilo Sousa</td>
-                  <td className="py-4 px-5 border-b text-zinc-500">danilo@example.com</td>
-                  <td className="py-4 px-5 border-b text-zinc-500">Developer</td>
-                  <td className="py-4 px-5 border-b text-zinc-500">Developer</td>
-                  <td className="py-4 px-5 border-b text-zinc-500">...</td>
-                  <td className="py-4 px-5 border-b text-zinc-500">...</td>
+              {projetos.map((projeto, index) => (
+                <tr className="hover:bg-gray-100" key={projeto.id}>
+                  <td className="py-4 px-5 border-b text-black font-semibold">{projeto.nome}</td>
+                  <td className="py-4 px-5 border-b text-zinc-500">{projeto.prazo}</td>
+                  <td className="py-4 px-5 border-b text-zinc-500">{projeto.projetoTecnologias?.[index]?.id_tecnologia.nome_tecnologia}</td>
+                  <td className="py-4 px-5 border-b text-zinc-500">{projeto.ColaboradorProjeto?.[index]?.id_colaborador.nome}</td>
                   <td className="py-4 px-5 border-b text-zinc-500">...</td>
                 </tr>
+              ))}
               </tbody>
             </table>
           </div>

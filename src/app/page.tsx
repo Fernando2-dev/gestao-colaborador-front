@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { Loader, LockIcon, LockKeyhole, MailIcon } from "lucide-react"
+import { Loader, LockKeyhole, MailIcon } from "lucide-react"
 import { authService } from "@/service/Auth/authService"
 import { InputControl, InputLabel, InputPrefix, InputRoot, InputRootInside } from "@/components/input"
 
@@ -41,6 +41,7 @@ export default function Login() {
     }
     setIsLoading(false)
   }
+
   return (
     <main className="flex h-screen w-full justify-center items-center">
       <form className="flex flex-col justify-center items-center min-w-[600px] min-h-[500px] bg-cyan-950 rounded-md space-y-5  " onSubmit={handleSubmit(handleLogin)}>

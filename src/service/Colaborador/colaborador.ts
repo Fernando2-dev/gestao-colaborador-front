@@ -1,19 +1,21 @@
 import { URL_API } from "@/utils/constante"
 import { tokenService } from "../Auth/tokenService"
 import axios from "axios"
-import { Colaborador } from "@/interface/colaborador"
+import { Colaborador, ColaboradorCreateInput } from "@/interface/colaborador"
 
-const token = tokenService.get()
+const token = tokenService.get(); 
 export const colaboradorRequest = {
   async read(): Promise<Colaborador[]> {
+    
     const resposta = await fetch(`${URL_API}/colaborador`, {
       headers: {
-        "Authorization": `${token}`
+        "Authorization": `Bearer ${token}` 
       },
       cache: "no-store"
-    })
-    const colaborador = resposta.json()
+    });
 
+    const colaborador = await resposta.json();
+    console.log(token)
     return colaborador;
   },
 
@@ -30,7 +32,7 @@ export const colaboradorRequest = {
     }
   },
 
-  async create(dados: Colaborador) {
+  async create(dados: ColaboradorCreateInput) {
     const resposta = await fetch(`${URL_API}/colaborador`, {
       method: "POST",
       headers: {

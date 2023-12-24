@@ -60,7 +60,7 @@ const InputRoot = forwardRef<HTMLDivElement, InputRootProps>(({className, ...pro
   return (
     <div
       className={
-        cn("flex flex-col gap-2 px-4",
+        cn("flex flex-col gap-2 px-4 w-full",
       className)}
       {...props}
       ref={ref}
