@@ -1,4 +1,4 @@
-interface Colaborador {
+export interface Colaborador {
     id: number,
     nome: string,
     email: string
@@ -6,7 +6,7 @@ interface Colaborador {
     idade: string
     role: string
     regime_contratacao: string
-    areasAtuacaoColaborador: [
+    areasAtuacaoColaborador?: [
         {
             colaborador_id: number,
             areaAtuacao_id: number,
@@ -16,7 +16,7 @@ interface Colaborador {
             }
         }
     ],
-    ColaboradorProjeto: [
+    ColaboradorProjeto?: [
         {
             colaborador_id: number,
             projeto_id: number,

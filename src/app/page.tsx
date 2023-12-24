@@ -1,155 +1,100 @@
-export default function Colaborador() {
+"use client"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { Loader, LockIcon, LockKeyhole, MailIcon } from "lucide-react"
+import { authService } from "@/service/Auth/authService"
+import { InputControl, InputLabel, InputPrefix, InputRoot, InputRootInside } from "@/components/input"
+
+export default function Login() {
+
+  const loginCreateNewSchema = z.object({
+    email:
+      z.string()
+        .nonempty("O email é obrigatório")
+        .toLowerCase(),
+    senha:
+      z.string()
+        .nonempty("A senha é obrigatória")
+  })
+
+  type loginCreateNewData = z.infer<typeof loginCreateNewSchema>
+
+  const router = useRouter()
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { register, handleSubmit, formState } = useForm<loginCreateNewData>({
+    resolver: zodResolver(loginCreateNewSchema)
+  })
+
+  async function handleLogin(data: loginCreateNewData) {
+    setIsLoading(true)
+    try {
+      await authService.login(data)
+      router.push("/colaborador")
+    } catch (e) {
+      console.log("erro:", e)
+      setErrorMessage("email ou senha inválidos")
+    }
+    setIsLoading(false)
+  }
   return (
-    <>
-      <h1 className="text-3xl font-medium text-zinc-900">Colaborador</h1>
-      <div className="mt-6 flex flex-col ">
-        <div className="flex justify-between items-center pb-5 border-b border-zinc-300">
-          <div className="space-y-1">
-            <h2 className="text-lg font-medium text-zinc-700">Perfil de todos os colaboradores</h2>
-            <span className="text-sm font-medium text-zinc-500">acompanhe mais informações nas tabelas seguintes</span>
-          </div>
-        </div>
-        <div className="shadow-md p-12 mt-4">
-          <table className="w-full border-zinc-100 rounded-lg bg-white">
-            <thead className="bg-violet-200">
-              <tr className="">
-                <th className="text-left py-4 px-5 border-b text-black">Nome</th>
-                <th className="text-left py-4 px-5 border-b text-black">Email</th>
-                <th className="text-left py-4 px-5 border-b text-black">Idade</th>
-                <th className="text-left py-4 px-5 border-b text-black">Role</th>
-                <th className="text-left py-4 px-5 border-b text-black">Area</th>
-                <th className="text-left py-4 px-5 border-b text-black">Projeto</th>
-                <th className="text-left py-4 px-5 border-b text-black">Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="hover:bg-gray-100">
-                <td className="py-4 px-5 border-b text-black font-semibold">Danilo Sousa</td>
-                <td className="py-4 px-5 border-b text-zinc-500">danilo@example.com</td>
-                <td className="py-4 px-5 border-b text-zinc-500">Developer</td>
-                <td className="py-4 px-5 border-b text-zinc-500">Developer</td>
-                <td className="py-4 px-5 border-b text-zinc-500">...</td>
-                <td className="py-4 px-5 border-b text-zinc-500">...</td>
-                <td className="py-4 px-5 border-b text-zinc-500">...</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        {/* <form action="" id="setting" className="mt-6 flex flex-col w-full gap-5 divide-y divide-zinc-300">
+    <main className="flex h-screen w-full justify-center items-center">
+      <form className="flex flex-col justify-center items-center min-w-[600px] min-h-[500px] bg-cyan-950 rounded-md space-y-5  " onSubmit={handleSubmit(handleLogin)}>
+        <InputRoot className="w-10/12">
+          <InputLabel className="text-white font-semibold text-lg">Email</InputLabel>
+          <InputRootInside className="gap-5">
+            <InputPrefix>
+              <MailIcon className="text-white h-8 w-8" />
+            </InputPrefix>
+            <InputControl
+              id="email"
+              type="email"
+              placeholder="Email"
+              {...register("email")}
+              className="bg-white p-3 rounded-md"
+            />
+          </InputRootInside>
+        </InputRoot>
 
-          <div className="grid gap-3 grid-cols-form">
-            <label htmlFor="firstName" className="text-sm font-medium text-zinc-700">Name</label>
-            <div className="grid gap-6 grid-cols-2">
-              <InputRoot>
-                <InputControl
-                  defaultValue="diego"
-                  id="firstName"
-                />
-              </InputRoot>
-              <InputRoot>
-                <InputControl
-                  defaultValue="fernando"
-                  id=""
-                />
-              </InputRoot>
-            </div>
-          </div>
 
-          <div className="grid gap-3 grid-cols-form pt-5">
-            <label htmlFor="email" className="text-sm font-medium text-zinc-700">
-              Email Eddress
-            </label>
-            <div>
-              <InputRoot>
-                <InputPrefix>
-                  <Mail className="w-5 h-5 text-zinc-500" />
-                </InputPrefix>
-                <InputControl
-                  type="email"
-                  defaultValue="fernando@gmail.com"
-                  id="firstName"
-                />
-              </InputRoot>
-            </div>
-          </div>
+        {formState.errors.email && <span className="text-red-600">{formState.errors.email.message}</span>}
 
-          <div className="grid gap-3 grid-cols-form pt-5">
-            <label htmlFor="email" className="text-sm font-medium text-zinc-700 ">
-              Your Photo
-              <span className="mt-0.5 text-sm font-normal text-zinc-500 block">This will be displayed on your profile.</span>
-            </label>
-            <div className="flex items-start gap-5">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-zinc-200">
-                <User className="w-8 h-8 text-violet-500 " />
-              </div>
-              <label
-                htmlFor="photo"
-                className="text-zinc-500 flex-1 cursor-pointer flex-col items-center gap-3 rounded-lg border border-zinc-300 px-6 py-4 text-center shadow-sm">
-                Selecionar arquivo
-                <div className="rounded-full border-6 border-zinc-50 bg-zinc-100 p-2">
-                  <UploadCloud className="h-5 w-5 text-zinc-600" />
-                </div>
-              </label>
-              <input type="file" className="sr-only" id="photo" />
-            </div>
-          </div>
+        <InputRoot className="w-10/12">
+          <InputLabel className="text-white font-semibold text-lg">Senha</InputLabel>
+          <InputRootInside className="gap-5">
+            <InputPrefix>
+              <LockKeyhole className="text-white h-8 w-8" /></InputPrefix>
+            <InputControl
+              type="password"
+              placeholder="Senha"
+              className="bg-white p-3 rounded-md"
+              {...register("senha")}
+            />
+          </InputRootInside>
+        </InputRoot>
 
-          <div className="grid gap-3 grid-cols-form pt-5">
-            <label htmlFor="role" className="text-sm font-medium text-zinc-700">
-              Role
-            </label>
-            <div>
-              <InputRoot>
-                <InputControl
-                  type="email"
-                  defaultValue="CTO"
-                  id="role"
-                />
-              </InputRoot>
-            </div>
-          </div>
+        {formState.errors.senha && <span className="text-red-600">{formState.errors.senha.message}</span>}
+        {errorMessage && <span className="text-red-600">{errorMessage}</span>}
 
-          <div className="grid gap-3 grid-cols-form pt-5">
-            <label htmlFor="country" className="text-sm font-medium text-zinc-700">
-              Country
-            </label>
-            <div>
-            </div>
-          </div>
-
-          <div className="grid gap-3 grid-cols-form pt-5">
-            <label htmlFor="timezone" className="text-sm font-medium text-zinc-700">
-              Timezone
-            </label>
-            <div>
-            </div>
-          </div>
-
-          <div className="grid gap-3 grid-cols-form pt-5">
-            <label htmlFor="bio" className="text-sm font-medium text-zinc-700 ">
-              bio
-              <span className="mt-0.5 text-sm font-normal text-zinc-500 block">
-                Brite a short introdution
-              </span>
-            </label>
-            <div></div>
-          </div>
-
-          <div className="grid gap-3 grid-cols-form pt-5">
-            <label htmlFor="project" className="text-sm font-medium text-zinc-700 ">
-              Portifolio project
-              <span className="mt-0.5 text-sm font-normal text-zinc-500 block">
-                Brite a short introdution
-              </span>
-            </label>
-            <div></div>
-          </div>
-          <div className="flex justify-end gap-2 pt-4">
-            <button type="button" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm border border-zinc-300 text-zinc-700 hover:bg-zinc-50">Cancel</button>
-            <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white">Submit</button>
-          </div>
-        </form> */}
-      </div>
-    </>
+        <button
+          type="submit"
+          className={`text-black font-bold ${isLoading
+            ? "bg-white cursor-not-allowed active:bg-white"
+            : "bg-white cursor-pointer"
+            } w-1/4 rounded-md h-10 flex justify-center items-center`}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <Loader type="TailSpin" color="black" height={27} width={27} className="cursor-not-allowed " />
+          ) : (
+            "Login"
+          )}
+        </button>
+      </form>
+    </main>
   )
 }

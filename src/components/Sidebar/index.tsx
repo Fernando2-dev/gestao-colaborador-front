@@ -1,23 +1,25 @@
-import { BarChart, CheckSquare, Cog, Flag, Home, LifeBuoy, LogOut, Search, SquareStack, Users } from "lucide-react"
+import { LogOut, Search, SquareStack, Users } from "lucide-react"
 import { Logo } from "./logo"
 import { NaviItem } from "./naveItem"
-import { UsersSpace } from "./user"
-import { InputControl, InputPrefix, InputRoot } from "../input"
+import { InputControl, InputPrefix, InputRoot, InputRootInside } from "../input"
 
 export const Sidebar = () => {
     return (
         <aside className='flex flex-col items-center border-r border-zinc-200 px-8 py-8'>
             <div className="flex flex-col flex-1 gap-6 ">
                 <Logo />
-                <InputRoot>
+                <InputRootInside className="gap-5">
                     <InputPrefix>
                         <Search className="h-5 w-5 text-zinc-500" />
                     </InputPrefix>
-                    <InputControl placeholder="Seach" />
-                </InputRoot>
-
+                    <InputControl
+                        type="text"
+                        placeholder="pesquise..."
+                        className="bg-white rounded-md"
+                    />
+                </InputRootInside>
                 <nav className="space-y-0.5">
-                    <NaviItem icon={Users} title="Colaborador" path="/" />
+                    <NaviItem icon={Users} title="Colaborador" path="/colaborador" />
                     <NaviItem icon={SquareStack} title="Projeto" path="/projeto" />
                 </nav>
 
