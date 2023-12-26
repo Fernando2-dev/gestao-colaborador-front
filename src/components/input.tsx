@@ -28,7 +28,7 @@ const InputControl = forwardRef<HTMLInputElement, InputControlProps>(({ classNam
   return (
     <input
       className={
-        cn("flex-1 border-0 text-black bg-transparent placeholder:text-zinc-900 focus:outline-none",
+        cn("flex-1 border-0 text-black bg-transparent placeholder:text-zinc-900 focus:outline-none disabled:bg-slate-100 disabled:cursor-not-allowed",
           className)}
       {...props}
       ref={ref}
@@ -44,7 +44,7 @@ const InputRootInside = forwardRef<HTMLDivElement, InputRootInsideProps>(({ clas
   return (
     <div
       className={
-        cn("flex w-full items-center gap-2 rounded-lg border border-lg-zinc-300 px-3 py-3 shadow-sm",
+        cn("flex w-full items-center gap-2 rounded-lg border border-lg-zinc-300 px-3 py-3 shadow-sm  disabled:bg-slate-300 disabled:cursor-not-allowed",
           className)}
       {...props}
       ref={ref}
@@ -60,7 +60,7 @@ const InputRoot = forwardRef<HTMLDivElement, InputRootProps>(({className, ...pro
   return (
     <div
       className={
-        cn("flex flex-col gap-2 px-4 w-full",
+        cn("flex flex-col gap-2 px-4 w-full ",
       className)}
       {...props}
       ref={ref}

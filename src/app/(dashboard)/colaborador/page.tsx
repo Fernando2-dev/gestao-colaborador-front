@@ -1,11 +1,12 @@
-import { authService } from "@/service/Auth/authService";
-import { tokenService } from "@/service/Auth/tokenService";
+import { ModaisColaborador } from "@/components/modaisColaborador";
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { colaboradorRequest } from "@/service/Colaborador/colaborador"
 import Link from "next/link";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default async function Colaborador() {
   const colaborador = await colaboradorRequest.read();
-  const token = tokenService.get()
 
   return (
     <>
@@ -43,18 +44,47 @@ export default async function Colaborador() {
                   <td className="py-4 px-5 border-b text-zinc-500">{colaborado.regime_contratacao}</td>
                   <td className="py-4 px-5 border-b text-zinc-500">{colaborado.role}</td>
                   <td className="py-4 px-5 border-b text-zinc-500">
-                    {colaborado.areasAtuacaoColaborador?.[index]?.id_area_atuacao.area_atuacao}
+                    <Dialog>
+                      <DialogTrigger asChild>
+
+                      <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm border border-violet-400 text-black" form="setting">Áreas</button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader className="font-semibold">Area de Atuação</DialogHeader>
+                        {colaborado.areasAtuacaoColaborador?.map((area) => (
+                          <div key={area.id_area_atuacao.id}>
+                            <div className="p-3 border border-emerald-300 rounded-lg">{area.id_area_atuacao.area_atuacao}</div>
+                          </div>
+                        ))}
+                      </DialogContent>
+                    </Dialog>
                   </td>
                   <td className="py-4 px-5 border-b text-zinc-500">
-                    {colaborado.ColaboradorProjeto?.[index]?.id_projeto.nome}
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-500 text-white" form="setting">Projetos</button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader className="font-semibold">Projetos</DialogHeader>
+                        {colaborado.ColaboradorProjeto?.map((area) => (
+                          <div key={area.id_projeto.id}>
+                            <div className="p-3 border border-emerald-300 rounded-lg">
+                              {area.id_projeto.nome}
+                            </div>
+                          </div>
+                        ))}
+                      </DialogContent>
+                    </Dialog>
                   </td>
-                  <td className="py-4 px-5 border-b text-zinc-500">...</td>
+                  <td className="py-4 px-5 border-b text-zinc-500">
+                    <ModaisColaborador colaborador={colaborado} index={index} key={colaborado.id} />
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        
+        <ToastContainer autoClose={3000} />
       </div>
     </>
   )

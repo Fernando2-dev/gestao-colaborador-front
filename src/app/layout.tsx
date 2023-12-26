@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Sidebar } from '@/components/Sidebar'
+
 import { MensagemContextProvider } from '@/context/ContextMensagemProvider'
 
 export const metadata: Metadata = {

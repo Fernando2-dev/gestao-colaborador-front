@@ -12,7 +12,6 @@ export interface Projeto {
                 id: number,
                 nome: string,
                 email: string,
-                senha: string,
                 idade: string,
                 role: string,
                 regime_contratacao: string

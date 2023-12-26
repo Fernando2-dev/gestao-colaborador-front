@@ -19,14 +19,14 @@ export const MensagemContextProvider = ({children} : MensagemContextProviderProp
   const Sucesso = (text: string) => {
     toast.success(text, {
       theme:"light",
-      position: toast.POSITION.BOTTOM_LEFT
+      position: toast.POSITION.BOTTOM_RIGHT
     })
   }
 
   const Error = (text:string) => {
     toast.error(text, {
       theme: "light",
-      position: toast.POSITION.BOTTOM_LEFT
+      position: toast.POSITION.BOTTOM_RIGHT
     })
   }
 

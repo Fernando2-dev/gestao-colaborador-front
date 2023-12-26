@@ -1,39 +1,43 @@
-import { AreaAtuacao, Projeto } from "@/validacao/validacaoColaborador"
-
 export interface Colaborador {
-    id: number,
-    nome: string,
-    email: string
-    senha: string
-    idade: string
-    role: string
-    regime_contratacao: string
-    areasAtuacaoColaborador?: {
+    id: number;
+    nome: string;
+    email: string;
+    senha: string | null;
+    idade: string;
+    role: "MEMBRO" | "GESTOR";
+    regime_contratacao: "CLT" | "PJ";
+    areasAtuacaoColaborador?: Array<{
         colaborador_id: number;
         areaAtuacao_id: number;
-        id_area_atuacao: AreaAtuacao;
-    }[],
-    ColaboradorProjeto?: {
+        id_area_atuacao: {
+            id: number;
+            area_atuacao: string;
+        };
+    }>;
+    ColaboradorProjeto?: Array<{
         colaborador_id: number;
         projeto_id: number;
-        id_projeto: Projeto;
-    }[]
+        id_projeto: {
+            id: number;
+            nome: string;
+            prazo: string;
+            descricao: string;
+        };
+    }>;
 }
-export interface ColaboradorCreateInput {
-    nome: string,
-    email: string
-    senha: string
-    idade: string
-    role: string
-    regime_contratacao: string
-    areasAtuacaoColaborador?: {
+export interface ColaboradorUpgrade {
+    id: number;
+    nome: string;
+    email: string;
+    idade: string;
+    role: "MEMBRO" | "GESTOR";
+    regime_contratacao: "CLT" | "PJ";
+    areasAtuacaoColaborador?: Array<{
         colaborador_id: number;
         areaAtuacao_id: number;
-        id_area_atuacao: AreaAtuacao;
-    }[],
-    ColaboradorProjeto?: {
+    }>;
+    ColaboradorProjeto?: Array<{
         colaborador_id: number;
         projeto_id: number;
-        id_projeto: Projeto;
-    }[]
+    }>;
 }

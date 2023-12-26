@@ -3,13 +3,12 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form"
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import "react-toastify/dist/ReactToastify.css";
 import { useContext } from "react";
 import { MensagemContext } from "@/context/ContextMensagemProvider";
 import { Loader, LockKeyhole, MailIcon, User } from "lucide-react";
 import { colaboradorRequest } from "@/service/Colaborador/colaborador";
 import { ColaboradorSchema } from "@/validacao/validacaoColaborador";
-import { InputControl, InputLabel, InputRoot, InputRootInside, InputPrefix } from "@/components/input";
+import { InputControl, InputRoot, InputRootInside, InputPrefix } from "@/components/input";
 import Link from "next/link";
 
 
@@ -26,12 +25,14 @@ const Created = () => {
   const handleCreateColaborador = async (data: createNewColaboradordata) => {
     try {
       await colaboradorRequest.create({
+        id: 0,
         nome: data.nome,
         email: data.email,
         idade: data.idade,
         role: data.role,
         senha: data.senha,
         regime_contratacao: data.regime_contratacao,
+
       })
       Sucesso("Colaborador cadastrado com sucesso")
       router.push("/colaborador");
@@ -41,7 +42,7 @@ const Created = () => {
       console.log(error)
     }
   }
-
+ console.log(formState.errors)
   return (
 
     <div>
