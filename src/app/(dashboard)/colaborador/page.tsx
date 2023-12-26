@@ -1,4 +1,5 @@
 import { ModaisColaborador } from "@/components/modaisColaborador";
+import { ModalAreaAtuacao } from "@/components/modalAreaAtuacao";
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { colaboradorRequest } from "@/service/Colaborador/colaborador"
 import Link from "next/link";
@@ -7,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default async function Colaborador() {
   const colaborador = await colaboradorRequest.read();
+  const areaAtuacao = await colaboradorRequest.readArea()
 
   return (
     <>
@@ -18,8 +20,9 @@ export default async function Colaborador() {
             <span className="text-sm font-medium text-zinc-500">acompanhe mais informações nas tabelas seguintes</span>
           </div>
           <div className="flex items-center gap-2">
+            <ModalAreaAtuacao areaAtuacao={areaAtuacao}/>
             <Link href="/colaborador/created">
-              <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white" form="setting">Cadastrar</button>
+              <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white" form="setting">Cadastrar Colaborador</button>
             </Link>
           </div>
         </div>
@@ -46,8 +49,7 @@ export default async function Colaborador() {
                   <td className="py-4 px-5 border-b text-zinc-500">
                     <Dialog>
                       <DialogTrigger asChild>
-
-                      <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm border border-violet-400 text-black" form="setting">Áreas</button>
+                        <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm border border-violet-400 text-black" form="setting">Áreas</button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader className="font-semibold">Area de Atuação</DialogHeader>

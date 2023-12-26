@@ -36,6 +36,7 @@ const Created = () => {
       })
       Sucesso("Colaborador cadastrado com sucesso")
       router.push("/colaborador");
+      router.refresh()
       reset()
     } catch (error) {
       Error("Erro ao cadastrar o colaborador")

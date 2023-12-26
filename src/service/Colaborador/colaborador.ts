@@ -24,10 +24,22 @@ export const colaboradorRequest = {
       headers: {
         "Authorization": `Bearer ${token}`
       },
-      cache: "no-store"
     });
     const area = await resposta.json();
     return area;
+  },
+
+  async createAreaAtuacao(dados: AreaAtuacao) {
+    const resposta = await fetch(`${URL_API}/colaborador/areaAtuacao`, {
+      method: "POST",
+      headers: {
+        "Authorization": `${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(dados),
+      cache: "no-store"
+    })
+    return resposta;
   },
 
   async readId(id: number): Promise<Colaborador> {
@@ -69,6 +81,15 @@ export const colaboradorRequest = {
 
   async delete(id: number) {
     await fetch(`${URL_API}/colaborador/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `${token}`
+      },
+      cache: "no-store"
+    },)
+  },
+  async deleteAreaAtuacao(id: number) {
+    await fetch(`${URL_API}/colaborador/areaAtuacao/${id}`, {
       method: "DELETE",
       headers: {
         "Authorization": `${token}`
