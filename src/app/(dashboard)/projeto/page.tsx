@@ -1,4 +1,5 @@
 import { ModaisProjeto } from "@/components/modaisProjeto";
+import { ModalTecnologia } from "@/components/modalTecnologia";
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { projetoRequest } from "@/service/Projeto/projeto"
 import Link from "next/link";
@@ -7,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default async function Projeto() {
   const projetos = await projetoRequest.read();
+  const tecnologia = await projetoRequest.readTecnologia()
 
   return (
     <>
@@ -18,8 +20,9 @@ export default async function Projeto() {
             <span className="text-sm font-medium text-zinc-500">Acompanhe mais informações nas tabelas seguintes</span>
           </div>
           <div className="flex items-center gap-2">
+            <ModalTecnologia tecnologia={tecnologia}/>
             <Link href="/projeto/created">
-              <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white" form="setting">Cadastrar</button>
+              <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white" form="setting">Cadastrar Projeto</button>
             </Link>
           </div>
         </div>
