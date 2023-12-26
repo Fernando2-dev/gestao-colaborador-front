@@ -100,7 +100,7 @@ export const ModalVisualizacaoProjeto = ({ projeto }: IModal) => {
                         <div className="flex gap-3 flex-wrap">
                             {projeto.ColaboradorProjeto?.map(colaborador => (
                                 <div key={colaborador.colaborador_id}>
-                                    <div className="p-3 border border-emerald-300 rounded-lg w-full flex justify-center items-center hover:bg-violet-300 hover:text-white">
+                                    <div className="p-3 border border-emerald-300 rounded-lg w-full flex justify-center items-center hover:bg-violet-300 hover:text-white font-bold">
                                         {colaborador.id_colaborador.nome}
                                     </div>
                                 </div>

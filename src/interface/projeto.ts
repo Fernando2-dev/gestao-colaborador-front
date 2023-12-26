@@ -1,6 +1,6 @@
 
 export interface Projeto {
-    id: string,
+    id: number,
     nome: string,
     prazo: string,
     descricao: string,

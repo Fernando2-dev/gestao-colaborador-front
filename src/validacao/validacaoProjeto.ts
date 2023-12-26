@@ -1,10 +1,17 @@
 import { z } from "zod";
 
+const isNonEmptyString = (value: string | undefined) => value !== undefined && value.trim() !== '';
+
 export const ProjetoSchema = z.object({
-    id: z.number(),
-    nome: z.string(),
-    prazo: z.string(),
-    descricao: z.string(),
+    nome: z.string().refine(isNonEmptyString, {
+        message: "O campo 'nome' é obrigatório e não pode estar vazio."
+    }),
+    prazo: z.string().refine(isNonEmptyString, {
+        message: "O campo 'prazo' é obrigatório e não pode estar vazio."
+    }),
+    descricao: z.string().refine(isNonEmptyString, {
+        message: "O campo 'descricao' é obrigatório e não pode estar vazio."
+    }),
     ColaboradorProjeto: z.array(z.object({
         colaborador_id: z.number(),
         projeto_id: z.number(),
