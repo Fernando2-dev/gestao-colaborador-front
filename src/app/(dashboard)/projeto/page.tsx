@@ -20,7 +20,7 @@ export default async function Projeto() {
             <span className="text-sm font-medium text-zinc-500">Acompanhe mais informações nas tabelas seguintes</span>
           </div>
           <div className="flex items-center gap-2">
-            <ModalTecnologia tecnologia={tecnologia}/>
+            <ModalTecnologia tecnologia={tecnologia} />
             <Link href="/projeto/created">
               <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white" form="setting">Cadastrar Projeto</button>
             </Link>
@@ -50,7 +50,7 @@ export default async function Projeto() {
                         <button type="button" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm border border-violet-400 text-black" form="setting">Tecnologias</button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader className="font-semibold">Tecnologia</DialogHeader>
+                        <DialogHeader className="font-semibold">Tecnologias associadas</DialogHeader>
                         {projeto.projetoTecnologias?.map((tec) => (
                           <div key={tec.tecnologia_id}>
                             <div className="p-3 border border-emerald-300 rounded-lg">{tec.id_tecnologia.nome_tecnologia}</div>
@@ -65,7 +65,7 @@ export default async function Projeto() {
                         <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-500 text-white" form="setting">Colaborador</button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader className="font-semibold">Colaborador</DialogHeader>
+                        <DialogHeader className="font-semibold">Colaboradores associados</DialogHeader>
                         {projeto.ColaboradorProjeto?.map((colaborador) => (
                           <div key={colaborador.colaborador_id}>
                             <div className="p-3 border border-emerald-300 rounded-lg">

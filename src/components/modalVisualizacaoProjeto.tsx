@@ -92,7 +92,7 @@ export const ModalVisualizacaoProjeto = ({ projeto }: IModal) => {
                         <div className="flex gap-3 flex-wrap">
                             {projeto.projetoTecnologias?.map(tec => (
                                 <div key={tec.tecnologia_id}>
-                                    <div className="p-3 border border-emerald-300 rounded-lg w-full flex justify-center items-center hover:bg-emerald-500 hover:text-white font-bold" >{tec.id_tecnologia.nome_tecnologia}</div>
+                                    <div className="p-3 border border-emerald-300 rounded-lg w-full flex justify-center items-center hover:bg-emerald-500 hover:text-white font-bold" >{tec.id_tecnologia?.nome_tecnologia}</div>
                                 </div>
                             ))}
                         </div>
@@ -101,7 +101,7 @@ export const ModalVisualizacaoProjeto = ({ projeto }: IModal) => {
                             {projeto.ColaboradorProjeto?.map(colaborador => (
                                 <div key={colaborador.colaborador_id}>
                                     <div className="p-3 border border-emerald-300 rounded-lg w-full flex justify-center items-center hover:bg-emerald-500 hover:text-white font-bold">
-                                        {colaborador.id_colaborador.nome}
+                                        {colaborador.id_colaborador?.nome}
                                     </div>
                                 </div>
                             ))}

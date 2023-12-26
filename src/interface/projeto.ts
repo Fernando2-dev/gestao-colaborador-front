@@ -29,5 +29,25 @@ export interface Projeto {
         }
     ]
 }
+export interface ProjetoUpdate {
+    id: number,
+    nome: string,
+    prazo: string,
+    descricao: string,
+    ColaboradorProjeto?:
+        {
+            colaborador_id: number,
+            projeto_id: number,
+            
+        }[]
+    ,
+    projetoTecnologias?: 
+        {
+            tecnologia_id: number,
+            projeto_id: number,
+           
+        }[]
+    
+}
 
 

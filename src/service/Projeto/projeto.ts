@@ -3,6 +3,7 @@ import { tokenService } from "../Auth/tokenService";
 import axios from "axios";
 import { Projeto } from "@/interface/projeto";
 import { Tecnologia } from "@/interface/tecnologia";
+import { ProjetoUpdate } from "@/interface/projeto";
 
 const token = tokenService.get()
 
@@ -17,7 +18,7 @@ export const projetoRequest = {
     const projeto = resposta.json()
     return projeto;
   },
-  
+
   async readTecnologia(): Promise<Tecnologia[]> {
     const resposta = await fetch(`${URL_API}/projeto/tecnologia`, {
       headers: {
@@ -61,7 +62,7 @@ export const projetoRequest = {
     })
     return resposta
   },
-  async upgrade(dados: Projeto) {
+  async update(dados: ProjetoUpdate) {
     const resposta = await fetch(`${URL_API}/projeto/${dados.id}`, {
       method: "PUT",
       headers: {
