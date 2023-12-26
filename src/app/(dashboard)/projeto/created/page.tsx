@@ -31,6 +31,7 @@ const Created = () => {
                 descricao: data.descricao
             })
             Sucesso("Projeto cadastrado com sucesso")
+            router.refresh()
             router.push("/projeto");
             reset()
         } catch (error) {

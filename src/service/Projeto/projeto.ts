@@ -49,7 +49,7 @@ export const projetoRequest = {
     return resposta
   },
 
-  async delete(id: string): Promise<void> {
+  async delete(id: number): Promise<void> {
     await fetch(`${URL_API}/projeto/${id}`, {
       method: "DELETE",
       headers: {

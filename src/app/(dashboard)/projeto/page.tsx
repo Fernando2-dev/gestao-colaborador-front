@@ -2,6 +2,8 @@ import { ModaisProjeto } from "@/components/modaisProjeto";
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { projetoRequest } from "@/service/Projeto/projeto"
 import Link from "next/link";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default async function Projeto() {
   const projetos = await projetoRequest.read();
@@ -78,8 +80,10 @@ export default async function Projeto() {
               ))}
             </tbody>
           </table>
+
         </div>
       </div>
+      <ToastContainer autoClose={3000} />
     </>
   )
 

@@ -22,7 +22,7 @@ export const ModalExcluirColaborador = ({ colaborador }: IModal) => {
         try {
             await colaboradorRequest.delete(id)
             Sucesso("Colaborador deletado com sucesso !")
-            router.push("/colaborador")
+            router.refresh()
         } catch (error) {
             Error("Colaborador não pode ser deletado. pois existe relação com projeto")
             console.log(error)
@@ -37,13 +37,15 @@ export const ModalExcluirColaborador = ({ colaborador }: IModal) => {
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader className="font-semibold">Tem certeza que deseja excluir esse colaborador ?</DialogHeader>
                 <div className="flex gap-4 justify-end items-center">
-                    <button
-                        type="button"
-                        className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-red-600 text-white" form="setting"
-                        onClick={() => handleDeleteClient(colaborador.id)}
-                    >
-                        Excluir
-                    </button>
+                    <DialogTrigger asChild>
+                        <button
+                            type="button"
+                            className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-red-600 text-white" form="setting"
+                            onClick={() => handleDeleteClient(colaborador.id)}
+                        >
+                            Excluir
+                        </button>
+                    </DialogTrigger>
                 </div>
             </DialogContent>
         </Dialog>
