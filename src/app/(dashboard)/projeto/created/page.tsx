@@ -5,8 +5,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useContext } from "react";
 import { MensagemContext } from "@/context/ContextMensagemProvider";
-import { Loader} from "lucide-react";
-import { InputControl, InputRoot, InputRootInside} from "@/components/input";
+import { Loader } from "lucide-react";
+import { InputControl, InputRoot, InputRootInside } from "@/components/input";
 import Link from "next/link";
 import { ProjetoSchema } from "@/validacao/validacaoProjeto";
 import { projetoRequest } from "@/service/Projeto/projeto";
@@ -43,64 +43,70 @@ const Created = () => {
 
         <div>
             <form action="" id="setting" className="mt-6 flex flex-col w-full gap-5 divide-y divide-zinc-300" onSubmit={handleSubmit(handleCreateProjeto)}>
-                <div className="grid gap-3 grid-cols-form">
-                    <label className="text-sm font-medium text-zinc-700">Nome</label>
-                    <div className="grid gap-6 grid-cols-1">
-                        <InputRoot>
-                            <InputRootInside className="gap-5">
-                                <InputControl
-                                    type="text"
-                                    placeholder="digite seu nome"
-                                    {...register("nome")}
-                                    className="bg-white  rounded-md"
-                                />
-                            </InputRootInside>
-                        </InputRoot>
+
+                <div>
+                    <div className="grid gap-3 grid-cols-form">
+                        <label className="text-sm font-medium text-zinc-700">Nome</label>
+                        <div className="grid gap-6 grid-cols-1">
+                            <InputRoot>
+                                <InputRootInside className="gap-5">
+                                    <InputControl
+                                        type="text"
+                                        placeholder="digite seu nome"
+                                        {...register("nome")}
+                                        className="bg-white  rounded-md"
+                                    />
+                                </InputRootInside>
+                            </InputRoot>
+                        </div>
                     </div>
-                </div>
 
-                {formState.errors.nome && <span className="text-red-500 ml-5 mt-1 text-xs">
-                    {formState.errors.nome.message}
-                </span>}
-
-                <div className="grid gap-3 grid-cols-form pt-5">
-                    <label className="text-sm font-medium text-zinc-700"> Prazo </label>
-                    <div className="grid gap-6 grid-cols-1">
-                        <InputRoot>
-                            <InputRootInside className="gap-5">
-                                <InputControl
-                                    type="date"
-                                    placeholder="digite o prazo do projeto"
-                                    {...register("prazo")}
-                                    className="bg-white  rounded-md"
-                                />
-                            </InputRootInside>
-                        </InputRoot>
-                    </div>
-                </div>
-
-                {formState.errors.prazo && <span className="text-red-500 ml-5 mt-1 text-xs">
-                    {formState.errors.prazo.message}
-                </span>}
-
-                <div className="grid gap-3 grid-cols-form pt-5">
-                    <label className="text-sm font-medium text-zinc-700"> Descrição </label>
-                    <div className="grid gap-6 grid-cols-1">
-                        <InputRoot>
-                            <InputRootInside className="gap-5">
-                                <textarea
-                                    className="w-full disabled:bg-gray-100 disabled:cursor-not-allowed focus:outline-none"
-                                    {...register("descricao")}
-                                />
-                            </InputRootInside>
-                        </InputRoot>
-                    </div>
-                </div>
-
-                {formState.errors.descricao &&
-                    <span className="text-red-500 ml-5 mt-1 text-xs">
-                        {formState.errors.descricao.message}
+                    {formState.errors.nome && <span className="text-red-500 ml-5 mt-1 text-xs">
+                        {formState.errors.nome.message}
                     </span>}
+                </div>
+                <div>
+                    <div className="grid gap-3 grid-cols-form pt-5">
+                        <label className="text-sm font-medium text-zinc-700"> Prazo </label>
+                        <div className="grid gap-6 grid-cols-1">
+                            <InputRoot>
+                                <InputRootInside className="gap-5">
+                                    <InputControl
+                                        type="date"
+                                        placeholder="digite o prazo do projeto"
+                                        {...register("prazo")}
+                                        className="bg-white  rounded-md"
+                                    />
+                                </InputRootInside>
+                            </InputRoot>
+                        </div>
+                    </div>
+
+                    {formState.errors.prazo && <span className="text-red-500 ml-5 mt-1 text-xs">
+                        {formState.errors.prazo.message}
+                    </span>}
+                </div>
+
+                <div>
+                    <div className="grid gap-3 grid-cols-form pt-5">
+                        <label className="text-sm font-medium text-zinc-700"> Descrição </label>
+                        <div className="grid gap-6 grid-cols-1">
+                            <InputRoot>
+                                <InputRootInside className="gap-5">
+                                    <textarea
+                                        className="w-full disabled:bg-gray-100 disabled:cursor-not-allowed focus:outline-none"
+                                        {...register("descricao")}
+                                    />
+                                </InputRootInside>
+                            </InputRoot>
+                        </div>
+                    </div>
+
+                    {formState.errors.descricao &&
+                        <span className="text-red-500 ml-5 mt-1 text-xs">
+                            {formState.errors.descricao.message}
+                        </span>}
+                </div>
 
                 <div className="flex justify-end gap-2 pt-4">
                     <Link href="/projeto">

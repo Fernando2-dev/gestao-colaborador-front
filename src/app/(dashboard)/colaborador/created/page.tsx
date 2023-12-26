@@ -43,152 +43,161 @@ const Created = () => {
       console.log(error)
     }
   }
- console.log(formState.errors)
+  console.log(formState.errors)
   return (
 
     <div>
+      <h2 className="text-2xl font-semibold">Cadastro colaborador</h2>
       <form action="" id="setting" className="mt-6 flex flex-col w-full gap-5 divide-y divide-zinc-300" onSubmit={handleSubmit(handleCreateColaborador)}>
-        <div className="grid gap-3 grid-cols-form">
-          <label className="text-sm font-medium text-zinc-700">Name</label>
-          <div className="grid gap-6 grid-cols-1">
-            <InputRoot>
-              <InputRootInside className="gap-5">
-                <InputPrefix>
-                  <User className="text-gray-400 h-6 w-6" />
-                </InputPrefix>
-                <InputControl
-                  id="email"
-                  type="text"
-                  placeholder="digite seu nome"
-                  {...register("nome")}
-                  className="bg-white  rounded-md"
-                />
-              </InputRootInside>
-            </InputRoot>
+        <div>
+          <div className="grid gap-3 grid-cols-form">
+            <label className="text-sm font-medium text-zinc-700">Name</label>
+            <div className="grid gap-6 grid-cols-1">
+              <InputRoot>
+                <InputRootInside className="gap-5">
+                  <InputPrefix>
+                    <User className="text-gray-400 h-6 w-6" />
+                  </InputPrefix>
+                  <InputControl
+                    id="email"
+                    type="text"
+                    placeholder="digite seu nome"
+                    {...register("nome")}
+                    className="bg-white  rounded-md"
+                  />
+                </InputRootInside>
+              </InputRoot>
+            </div>
           </div>
-        </div>
-
-        {formState.errors.nome && <span className="text-red-500 ml-5 mt-1 text-xs">
-          {formState.errors.nome.message}
-        </span>}
-
-        <div className="grid gap-3 grid-cols-form pt-5">
-          <label className="text-sm font-medium text-zinc-700"> Email </label>
-          <div className="grid gap-6 grid-cols-1">
-            <InputRoot>
-              <InputRootInside className="gap-5">
-                <InputPrefix>
-                  <MailIcon className="text-gray-400 h-6 w-6" />
-                </InputPrefix>
-                <InputControl
-                  id="email"
-                  type="email"
-                  placeholder="digite seu email"
-                  {...register("email")}
-                  className="bg-white  rounded-md"
-                />
-              </InputRootInside>
-            </InputRoot>
-          </div>
-        </div>
-
-        {formState.errors.email && <span className="text-red-500 ml-5 mt-1 text-xs">
-          {formState.errors.email.message}
-        </span>}
-
-        <div className="grid gap-3 grid-cols-form pt-5">
-          <label className="text-sm font-medium text-zinc-700"> Idade </label>
-          <div className="grid gap-6 grid-cols-1">
-            <InputRoot>
-              <InputRootInside className="gap-5">
-                <InputControl
-                  type="number"
-                  placeholder="digite a sua idade"
-                  {...register("idade")}
-                  className="bg-white  rounded-md"
-                />
-              </InputRootInside>
-            </InputRoot>
-          </div>
-        </div>
-
-        {formState.errors.idade &&
-          <span className="text-red-500 ml-5 mt-1 text-xs">
-            {formState.errors.idade.message}
+          {formState.errors.nome && <span className="text-red-500 ml-5 mt-1 text-xs">
+            {formState.errors.nome.message}
           </span>}
-
-        <div className="grid gap-3 grid-cols-form pt-5">
-          <label className="text-sm font-medium text-zinc-700">
-            Role
-          </label>
-          <div className="grid gap-6 grid-cols-1">
-            <select
-              className="flex w-full items-center gap-2 rounded-lg border border-lg-zinc-300 px-3 py-3 shadow-sm outline-none"
-              {...register("role")}
-              defaultValue=""
-            >
-              <option value="" disabled>
-                selecione uma role
-              </option>
-              <option value="MEMBRO">MEMBRO</option>
-              <option value="GESTOR">GESTOR</option>
-            </select>
-          </div>
         </div>
 
-        {formState.errors.role &&
-          <span className="text-red-500 ml-5 mt-1 text-xs">
-            {formState.errors.role.message}
-          </span>}
-
-        <div className="grid gap-3 grid-cols-form pt-5">
-          <label className="text-sm font-medium text-zinc-700">
-            Regime Contratação
-          </label>
-          <div className="grid gap-6 grid-cols-1">
-            <select
-              className="flex w-full items-center gap-2 rounded-lg border border-lg-zinc-300 px-3 py-3 shadow-sm outline-none"
-              {...register("regime_contratacao")}
-              defaultValue=""
-            >
-              <option value="" disabled>
-                selecione uma regime
-              </option>
-              <option value="CLT">CLT</option>
-              <option value="PJ">PJ</option>
-            </select>
+        <div>
+          <div className="grid gap-3 grid-cols-form pt-5">
+            <label className="text-sm font-medium text-zinc-700"> Email </label>
+            <div className="grid gap-6 grid-cols-1">
+              <InputRoot>
+                <InputRootInside className="gap-5">
+                  <InputPrefix>
+                    <MailIcon className="text-gray-400 h-6 w-6" />
+                  </InputPrefix>
+                  <InputControl
+                    id="email"
+                    type="email"
+                    placeholder="digite seu email"
+                    {...register("email")}
+                    className="bg-white  rounded-md"
+                  />
+                </InputRootInside>
+              </InputRoot>
+            </div>
           </div>
+          {formState.errors.email && <span className="text-red-500 ml-5 mt-1 text-xs">
+            {formState.errors.email.message}
+          </span>}
         </div>
 
-        {formState.errors.regime_contratacao &&
-          <span className="text-red-500 ml-5 mt-1 text-xs">
-            {formState.errors.regime_contratacao.message}
-          </span>}
-
-        <div className="grid gap-3 grid-cols-form pt-5">
-          <label htmlFor="senha" className="text-sm font-medium text-zinc-700">
-            Senha
-          </label>
-          <div className="grid gap-6 grid-cols-1">
-            <InputRoot >
-              <InputRootInside className="gap-5">
-                <InputPrefix>
-                  <LockKeyhole className="text-gray-400 h-6 w-6" /></InputPrefix>
-                <InputControl
-                  type="text"
-                  placeholder="digite sua senha"
-                  className="bg-white rounded-md"
-                  {...register("senha")}
-                />
-              </InputRootInside>
-            </InputRoot>
+        <div>
+          <div className="grid gap-3 grid-cols-form pt-5">
+            <label className="text-sm font-medium text-zinc-700"> Idade </label>
+            <div className="grid gap-6 grid-cols-1">
+              <InputRoot>
+                <InputRootInside className="gap-5">
+                  <InputControl
+                    type="number"
+                    placeholder="digite a sua idade"
+                    {...register("idade")}
+                    className="bg-white  rounded-md"
+                  />
+                </InputRootInside>
+              </InputRoot>
+            </div>
           </div>
+          {formState.errors.idade &&
+            <span className="text-red-500 ml-5 mt-1 text-xs">
+              {formState.errors.idade.message}
+            </span>}
         </div>
 
-        {formState.errors.senha &&
-          <span className="text-red-500 ml-5 mt-1 text-xs">
-            {formState.errors.senha.message}
-          </span>}
+        <div>
+          <div className="grid gap-3 grid-cols-form pt-5">
+            <label className="text-sm font-medium text-zinc-700">
+              Role
+            </label>
+            <div className="grid gap-6 grid-cols-1">
+              <select
+                className="flex w-full items-center gap-2 rounded-lg border border-lg-zinc-300 px-3 py-3 shadow-sm outline-none"
+                {...register("role")}
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  selecione uma role
+                </option>
+                <option value="MEMBRO">MEMBRO</option>
+                <option value="GESTOR">GESTOR</option>
+              </select>
+            </div>
+          </div>
+
+          {formState.errors.role &&
+            <span className="text-red-500 ml-5 mt-1 text-xs">
+              {formState.errors.role.message}
+            </span>}
+        </div>
+
+        <div>
+          <div className="grid gap-3 grid-cols-form pt-5">
+            <label className="text-sm font-medium text-zinc-700">
+              Regime Contratação
+            </label>
+            <div className="grid gap-6 grid-cols-1">
+              <select
+                className="flex w-full items-center gap-2 rounded-lg border border-lg-zinc-300 px-3 py-3 shadow-sm outline-none"
+                {...register("regime_contratacao")}
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  selecione uma regime
+                </option>
+                <option value="CLT">CLT</option>
+                <option value="PJ">PJ</option>
+              </select>
+            </div>
+          </div>
+          {formState.errors.regime_contratacao &&
+            <span className="text-red-500 ml-5 mt-1 text-xs">
+              {formState.errors.regime_contratacao.message}
+            </span>}
+        </div>
+
+        <div>
+          <div className="grid gap-3 grid-cols-form pt-5">
+            <label htmlFor="senha" className="text-sm font-medium text-zinc-700">
+              Senha
+            </label>
+            <div className="grid gap-6 grid-cols-1">
+              <InputRoot >
+                <InputRootInside className="gap-5">
+                  <InputPrefix>
+                    <LockKeyhole className="text-gray-400 h-6 w-6" /></InputPrefix>
+                  <InputControl
+                    type="text"
+                    placeholder="digite sua senha"
+                    className="bg-white rounded-md"
+                    {...register("senha")}
+                  />
+                </InputRootInside>
+              </InputRoot>
+            </div>
+          </div>
+
+          {formState.errors.senha &&
+            <span className="text-red-500 ml-5 mt-1 text-xs">
+              {formState.errors.senha.message}
+            </span>}
+        </div>
 
         <div className="flex justify-end gap-2 pt-4">
           <Link href="/colaborador">

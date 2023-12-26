@@ -49,7 +49,6 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
     const [projeto, setProjeto] = useState<Projeto[]>([])
     const [areaColaborador, setAreaColaborador] = useState<IMultiValue[]>([]);
     const [projetoColaborador, setProjetoColaborador] = useState<IMultiValue[]>([])
-    console.log(areaColaborador, projetoColaborador)
     const makeComponent = makeAnimated()
 
     useEffect(() => {

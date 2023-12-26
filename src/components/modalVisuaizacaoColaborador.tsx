@@ -116,7 +116,7 @@ export const ModalVisualizacaoColaborador = ({ colaborador }: IModal) => {
                         <div className="flex gap-3 flex-wrap">
                             {colaborador.areasAtuacaoColaborador?.map(area => (
                                 <div key={area.id_area_atuacao.id}>
-                                    <div className="p-3 border border-emerald-300 rounded-lg w-full flex justify-center items-center hover:bg-violet-300 hover:text-white font-bold" >{area.id_area_atuacao.area_atuacao}</div>
+                                    <div className="p-3 border border-emerald-300 rounded-lg w-full flex justify-center items-center hover:bg-emerald-500 hover:text-white font-bold" >{area.id_area_atuacao.area_atuacao}</div>
                                 </div>
                             ))}
                         </div>
@@ -124,7 +124,7 @@ export const ModalVisualizacaoColaborador = ({ colaborador }: IModal) => {
                         <div className="flex gap-3 flex-wrap">
                             {colaborador.ColaboradorProjeto?.map(area => (
                                 <div key={area.id_projeto.id}>
-                                    <div className="p-3 border border-emerald-300 rounded-lg w-full flex justify-center items-center hover:bg-violet-300 hover:text-white font-bold">
+                                    <div className="p-3 border border-emerald-300 rounded-lg w-full flex justify-center items-center hover:bg-emerald-500 hover:text-white font-bold">
                                         {area.id_projeto.nome}
                                     </div>
                                 </div>

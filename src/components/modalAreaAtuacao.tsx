@@ -29,7 +29,7 @@ export const ModalAreaAtuacao = ({ areaAtuacao }: IAreaAtuacao) => {
 
     const handleCadstroAtuacao = async (data: createNewAreaAtuacao) => {
         try {
-           await colaboradorRequest.createAreaAtuacao({
+            await colaboradorRequest.createAreaAtuacao({
                 id: 0,
                 area_atuacao: data.area_atuacao
             })
@@ -40,8 +40,8 @@ export const ModalAreaAtuacao = ({ areaAtuacao }: IAreaAtuacao) => {
             console.log(error)
         }
     };
-    
-    
+
+
     const handleAreaAtuacaoDelete = async (id: number) => {
         try {
             Sucesso("Area Atuação deletado com sucesso !")
@@ -95,7 +95,6 @@ export const ModalAreaAtuacao = ({ areaAtuacao }: IAreaAtuacao) => {
                 <table className="w-full border-zinc-100 rounded-lg bg-white">
                     <thead className="bg-violet-200">
                         <tr className="">
-                            <th className="text-left py-4 px-5 border-b text-black">Id</th>
                             <th className="text-left py-4 px-5 border-b text-black">Nome</th>
                             <th className="text-left py-4 px-5 border-b text-black">Ação</th>
                         </tr>
@@ -103,7 +102,6 @@ export const ModalAreaAtuacao = ({ areaAtuacao }: IAreaAtuacao) => {
                     <tbody>
                         {areas.map((area) => (
                             <tr className="hover:bg-gray-100" key={area.id}>
-                                <td className="py-4 px-5 border-b text-black font-semibold">{area.id}</td>
                                 <td className="py-4 px-5 border-b text-black font-semibold">{area.area_atuacao}</td>
                                 <td className="py-4 px-5 border-b text-black font-semibold">
                                     <XCircle className="h-6 w-6 text-red-500 cursor-pointer" onClick={() => handleAreaAtuacaoDelete(area.id)} />
