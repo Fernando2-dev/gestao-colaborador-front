@@ -28,7 +28,8 @@ const Created = () => {
                 id: 0,
                 nome: data.nome,
                 prazo: data.prazo,
-                descricao: data.descricao
+                descricao: data.descricao,
+                
             })
             Sucesso("Projeto cadastrado com sucesso")
             router.refresh()

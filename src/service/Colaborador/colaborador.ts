@@ -1,7 +1,7 @@
 import { URL_API } from "@/utils/constante"
 import { tokenService } from "../Auth/tokenService"
 import axios from "axios"
-import { Colaborador, ColaboradorUpgrade } from "@/interface/colaborador"
+import { Colaborador, ColaboradorAreaAtuacao, ColaboradorUpgrade } from "@/interface/colaborador"
 
 const token = tokenService.get();
 export const colaboradorRequest = {
@@ -67,6 +67,31 @@ export const colaboradorRequest = {
     return resposta;
   },
 
+  async createColaboradorAreaAtuacao(dados: ColaboradorAreaAtuacao) {
+    console.log("aqui", dados);
+    try {
+      const resposta = await axios.post<ColaboradorAreaAtuacao[]>(
+        `${URL_API}/colaborador/areaAtuacaoColaborador`,
+        dados, 
+        {
+          headers: {
+            Authorization: `${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      console.log(resposta.data);
+      if (!resposta.status) {
+        throw new Error(`Erro ao enviar dados: ${resposta.statusText}`);
+      }
+      return resposta;
+    } catch (error) {
+      console.error("Erro na solicitação:", error);
+      throw error;
+    }
+  },
+
   async upgrade(dados: ColaboradorUpgrade) {
     const resposta = await fetch(`${URL_API}/colaborador/${dados.id}`, {
       method: "PUT",
@@ -97,6 +122,7 @@ export const colaboradorRequest = {
       cache: "no-store"
     },)
   },
+
 
 
 }

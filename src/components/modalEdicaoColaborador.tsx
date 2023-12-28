@@ -66,8 +66,8 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
 
     const novasAreas = areaAtuacao.map(lista => ({ value: lista.id.toString(), label: lista.area_atuacao }));
     const novasProjeto = projeto.map(lista => ({ value: lista.id.toString(), label: lista.nome }));
-    const areaSelecionada = colaborador.areasAtuacaoColaborador?.map(lista => ({ value: String(lista.id_area_atuacao.id), label: lista.id_area_atuacao.area_atuacao }));
-    const projetoSelecionada = colaborador.ColaboradorProjeto?.map(lista => ({ value: String(lista.id_projeto.id), label: lista.id_projeto.nome }));
+    const areaSelecionada = colaborador.areasAtuacaoColaborador?.map(lista => ({ value: String(lista.id_area_atuacao?.id), label: lista.id_area_atuacao?.area_atuacao }));
+    const projetoSelecionada = colaborador.ColaboradorProjeto?.map(lista => ({ value: String(lista.id_projeto?.id), label: lista.id_projeto?.nome }));
 
     useEffect(() => {
         setValue("nome", colaborador.nome);
@@ -105,7 +105,6 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
         }
     }
 
-    console.log(formState.errors)
     return (
         <Drawer>
             <DrawerTrigger>
@@ -152,7 +151,7 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
                             </span>
                         }
                     </div>
-                    <div className="flex">
+                    {/* <div className="flex">
                         <InputRoot>
                             <InputLabel>Área Atuação</InputLabel>
                             <Select
@@ -176,7 +175,7 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
                                 className="w-full border-white"
                             />
                         </InputRoot>
-                    </div>
+                    </div> */}
                     <div className="flex">
                         <InputRoot>
                             <InputLabel>Idade</InputLabel>

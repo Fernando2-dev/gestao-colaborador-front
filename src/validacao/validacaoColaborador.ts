@@ -3,6 +3,7 @@ import { z } from "zod";
 const isNonEmptyString = (value: string | undefined) => value !== undefined && value.trim() !== '';
 
 export const ColaboradorSchema = z.object({
+    id: z.number().optional(),
     nome: z.string().refine(isNonEmptyString, {
         message: "O campo 'nome' é obrigatório."
     }),
@@ -29,7 +30,7 @@ export const ColaboradorSchema = z.object({
                 z.object({
                     id: z.number(),
                     area_atuacao: z.string()
-                })
+                }).optional()
         })
     ).optional(),
     projetoColaborador: z.array(
@@ -41,7 +42,7 @@ export const ColaboradorSchema = z.object({
                 nome: z.string(),
                 prazo: z.string(),
                 descricao: z.string(),
-            })
+            }).optional()
         })
     ).optional(),
 });

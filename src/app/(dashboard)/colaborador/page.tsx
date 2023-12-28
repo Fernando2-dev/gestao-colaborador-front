@@ -20,8 +20,11 @@ export default async function Colaborador() {
             <span className="text-sm font-medium text-zinc-500">acompanhe mais informações nas tabelas seguintes</span>
           </div>
           <div className="flex items-center gap-2">
-            <ModalAreaAtuacao areaAtuacao={areaAtuacao}/>
-            <Link href="/colaborador/created">
+            <ModalAreaAtuacao areaAtuacao={areaAtuacao} />
+            <Link href="/colaborador/cadastroVinculo">
+              <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-emerald-800 text-white" form="setting">Vinculo Colaborador</button>
+            </Link>
+            <Link href="/colaborador/cadastroColaborador">
               <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white" form="setting">Cadastrar Colaborador</button>
             </Link>
           </div>
@@ -54,8 +57,8 @@ export default async function Colaborador() {
                       <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader className="font-semibold">Area de Atuação</DialogHeader>
                         {colaborado.areasAtuacaoColaborador?.map((area) => (
-                          <div key={area.id_area_atuacao.id}>
-                            <div className="p-3 border border-emerald-300 rounded-lg">{area.id_area_atuacao.area_atuacao}</div>
+                          <div key={area.id_area_atuacao?.id}>
+                            <div className="p-3 border border-emerald-300 rounded-lg">{area.id_area_atuacao?.area_atuacao}</div>
                           </div>
                         ))}
                       </DialogContent>
@@ -69,9 +72,9 @@ export default async function Colaborador() {
                       <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader className="font-semibold">Projetos</DialogHeader>
                         {colaborado.ColaboradorProjeto?.map((area) => (
-                          <div key={area.id_projeto.id}>
+                          <div key={area.id_projeto?.id}>
                             <div className="p-3 border border-emerald-300 rounded-lg">
-                              {area.id_projeto.nome}
+                              {area.id_projeto?.nome}
                             </div>
                           </div>
                         ))}

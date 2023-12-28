@@ -1,7 +1,7 @@
 import { URL_API } from "@/utils/constante";
 import { tokenService } from "../Auth/tokenService";
 import axios from "axios";
-import { Projeto } from "@/interface/projeto";
+import { Projeto, ProjetoColaborador } from "@/interface/projeto";
 import { Tecnologia } from "@/interface/tecnologia";
 import { ProjetoUpdate } from "@/interface/projeto";
 
@@ -49,6 +49,17 @@ export const projetoRequest = {
       body: JSON.stringify(dados)
     })
     return resposta
+  },
+  async createProjetoColaborador(dados: ProjetoColaborador) {
+    const resposta = await fetch(`${URL_API}/projeto/colaborador`, {
+      method: "POST",
+      headers: {
+        "Authorization": `${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(dados)
+    })
+    return resposta;
   },
 
   async createTecnologia(dados: Tecnologia) {

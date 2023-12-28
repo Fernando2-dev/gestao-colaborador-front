@@ -35,19 +35,26 @@ export interface ProjetoUpdate {
     prazo: string,
     descricao: string,
     ColaboradorProjeto?:
-        {
-            colaborador_id: number,
-            projeto_id: number,
-            
-        }[]
+    {
+        colaborador_id: number,
+        projeto_id: number,
+
+    }[]
     ,
-    projetoTecnologias?: 
-        {
-            tecnologia_id: number,
-            projeto_id: number,
-           
-        }[]
-    
+    projetoTecnologias?:
+    {
+        tecnologia_id: number,
+        projeto_id: number,
+
+    }[]
+
 }
 
 
+export interface ProjetoColaborador {
+    ColaboradorProjeto: {
+        projeto_id: number,
+        colaborador_id: number
+    }[],
+
+}

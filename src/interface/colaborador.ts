@@ -9,7 +9,7 @@ export interface Colaborador {
     areasAtuacaoColaborador?: Array<{
         colaborador_id: number;
         areaAtuacao_id: number;
-        id_area_atuacao: {
+        id_area_atuacao?: {
             id: number;
             area_atuacao: string;
         };
@@ -17,7 +17,7 @@ export interface Colaborador {
     ColaboradorProjeto?: Array<{
         colaborador_id: number;
         projeto_id: number;
-        id_projeto: {
+        id_projeto?: {
             id: number;
             nome: string;
             prazo: string;
@@ -40,4 +40,13 @@ export interface ColaboradorUpgrade {
         colaborador_id: number;
         projeto_id: number;
     }>;
+}
+
+export interface ColaboradorAreaAtuacao {
+    areasAtuacaoColaborador:
+    {
+        areaAtuacao_id: number,
+        colaborador_id: number
+    }[],
+
 }
