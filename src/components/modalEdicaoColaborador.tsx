@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { colaboradorRequest } from "@/service/Colaborador/colaborador";
 import Select, { ActionMeta, MultiValue } from "react-select"
 import makeAnimated from "react-select/animated"
-import { Projeto, ProjetoColaborador } from "@/interface/projeto";
+import { Projeto, ProjetoColaborador, ProjetoColaboradorDelete } from "@/interface/projeto";
 import { projetoRequest } from "@/service/Projeto/projeto";
 
 
@@ -81,7 +81,7 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
     }, [colaborador, setValue]);
 
     const router = useRouter()
-    
+
     const handleSubmitColaborador = async (data: colaboradorSchemaUpgrade) => {
         try {
             const vinculos = colaborador.areasAtuacaoColaborador?.map(vinculo => ({
@@ -89,10 +89,19 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
                 areaAtuacao_id: vinculo.id_area_atuacao?.id || 0,
             })) ?? [];
 
+            const vinculoProjeto = colaborador.ColaboradorProjeto?.map(vinculo => ({
+                colaborador_id: colaborador.id,
+                projeto_id: vinculo.id_projeto?.id || 0,
+            })) ?? [];
+
             const vinc: ColaboradorAreaAtuacaoDelete = {
                 vinculos: vinculos
             }
+            const vincprojeto: ProjetoColaboradorDelete = {
+                vinculoProjeto: vinculoProjeto
+            }
             await colaboradorRequest.deleteColaboradorAreaAtuacao(vinc)
+            await projetoRequest.deleteColaboradorProjeto(vincprojeto)
 
             await colaboradorRequest.update({
                 id: colaborador.id,
@@ -121,7 +130,7 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
             const projeto: ProjetoColaborador = {
                 ColaboradorProjeto: colaboradorProjetoData
             }
-            
+
             await colaboradorRequest.createColaboradorAreaAtuacao(area)
             await projetoRequest.createProjetoColaborador(projeto)
 

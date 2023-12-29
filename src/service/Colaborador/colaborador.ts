@@ -2,6 +2,7 @@ import { URL_API } from "@/utils/constante"
 import { tokenService } from "../Auth/tokenService"
 import axios from "axios"
 import { Colaborador, ColaboradorAreaAtuacao, ColaboradorAreaAtuacaoDelete, ColaboradorUpgrade } from "@/interface/colaborador"
+import { ProjetoColaboradorDelete } from "@/interface/projeto";
 
 const token = tokenService.get();
 export const colaboradorRequest = {
@@ -116,6 +117,7 @@ export const colaboradorRequest = {
       throw error;
     }
   },
+
 
   async update(dados: ColaboradorUpgrade) {
     const resposta = await fetch(`${URL_API}/colaborador`, {

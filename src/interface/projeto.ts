@@ -58,3 +58,10 @@ export interface ProjetoColaborador {
     }[],
 
 }
+export interface ProjetoColaboradorDelete {
+    vinculoProjeto: {
+        projeto_id: number,
+        colaborador_id: number
+    }[],
+
+}

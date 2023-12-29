@@ -1,7 +1,7 @@
 import { URL_API } from "@/utils/constante";
 import { tokenService } from "../Auth/tokenService";
 import axios from "axios";
-import { Projeto, ProjetoColaborador } from "@/interface/projeto";
+import { Projeto, ProjetoColaborador, ProjetoColaboradorDelete } from "@/interface/projeto";
 import { Tecnologia } from "@/interface/tecnologia";
 import { ProjetoUpdate } from "@/interface/projeto";
 
@@ -60,6 +60,28 @@ export const projetoRequest = {
       body: JSON.stringify(dados)
     })
     return resposta;
+  },
+  
+  async deleteColaboradorProjeto(dados: ProjetoColaboradorDelete) {
+    try {
+      const resposta = await axios.delete(
+        `${URL_API}/projeto/colaborador`,
+        {
+          headers: {
+            Authorization: `${token}`,
+            "Content-Type": "application/json",
+          },
+          data: dados
+        }
+      );
+      if (!resposta.status) {
+        throw new Error(`Erro ao enviar dados: ${resposta.statusText}`);
+      }
+      return resposta;
+    } catch (error) {
+      console.error("Erro na solicitação:", error);
+      throw error;
+    }
   },
 
   async createTecnologia(dados: Tecnologia) {
