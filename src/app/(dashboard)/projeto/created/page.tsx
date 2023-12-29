@@ -40,7 +40,6 @@ const Created = () => {
             console.log(error)
         }
     }
-    console.log(formState.errors)
     return (
 
         <div>

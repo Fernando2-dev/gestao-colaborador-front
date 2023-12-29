@@ -55,8 +55,6 @@ export const ModalTecnologia= ({ tecnologia }: ITecnologia) => {
         }
 
     }
-    console.log(formState.errors)
-    console.log(watch("nome_tecnologia"))
     return (
         <Dialog>
             <DialogTrigger asChild>

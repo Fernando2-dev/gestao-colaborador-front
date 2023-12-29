@@ -1,7 +1,7 @@
 import { URL_API } from "@/utils/constante"
 import { tokenService } from "../Auth/tokenService"
 import axios from "axios"
-import { Colaborador, ColaboradorAreaAtuacao, ColaboradorUpgrade } from "@/interface/colaborador"
+import { Colaborador, ColaboradorAreaAtuacao, ColaboradorAreaAtuacaoDelete, ColaboradorUpgrade } from "@/interface/colaborador"
 
 const token = tokenService.get();
 export const colaboradorRequest = {
@@ -15,7 +15,6 @@ export const colaboradorRequest = {
     });
 
     const colaborador = await resposta.json();
-    console.log(token)
     return colaborador;
   },
 
@@ -63,12 +62,18 @@ export const colaboradorRequest = {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(dados)
-    })
-    return resposta;
+    });
+  
+    try {
+      const corpoResposta = await resposta.json();
+  
+      return { dados: corpoResposta };
+    } catch (error) {
+      return { resposta };
+    }
   },
 
   async createColaboradorAreaAtuacao(dados: ColaboradorAreaAtuacao) {
-    console.log("aqui", dados);
     try {
       const resposta = await axios.post<ColaboradorAreaAtuacao[]>(
         `${URL_API}/colaborador/areaAtuacaoColaborador`,
@@ -80,8 +85,6 @@ export const colaboradorRequest = {
           },
         }
       );
-  
-      console.log(resposta.data);
       if (!resposta.status) {
         throw new Error(`Erro ao enviar dados: ${resposta.statusText}`);
       }
@@ -92,8 +95,30 @@ export const colaboradorRequest = {
     }
   },
 
-  async upgrade(dados: ColaboradorUpgrade) {
-    const resposta = await fetch(`${URL_API}/colaborador/${dados.id}`, {
+  async deleteColaboradorAreaAtuacao(dados: ColaboradorAreaAtuacaoDelete) {
+    try {
+      const resposta = await axios.delete(
+        `${URL_API}/colaborador/areaAtuacaoColaborador`,
+        {
+          headers: {
+            Authorization: `${token}`,
+            "Content-Type": "application/json",
+          },
+          data: dados
+        }
+      );
+      if (!resposta.status) {
+        throw new Error(`Erro ao enviar dados: ${resposta.statusText}`);
+      }
+      return resposta;
+    } catch (error) {
+      console.error("Erro na solicitação:", error);
+      throw error;
+    }
+  },
+
+  async update(dados: ColaboradorUpgrade) {
+    const resposta = await fetch(`${URL_API}/colaborador`, {
       method: "PUT",
       headers: {
         "Authorization": `${token}`,

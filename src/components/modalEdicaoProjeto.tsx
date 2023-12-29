@@ -100,7 +100,6 @@ export const ModalEdicaoProjeto = ({ projeto }: IModal) => {
         }
     }
 
-    console.log(formState.errors)
     return (
         <Drawer>
             <DrawerTrigger>

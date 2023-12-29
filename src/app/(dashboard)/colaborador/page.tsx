@@ -21,9 +21,9 @@ export default async function Colaborador() {
           </div>
           <div className="flex items-center gap-2">
             <ModalAreaAtuacao areaAtuacao={areaAtuacao} />
-            <Link href="/colaborador/cadastroVinculo">
+            {/* <Link href="/colaborador/cadastroVinculo">
               <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-emerald-800 text-white" form="setting">Vinculo Colaborador</button>
-            </Link>
+            </Link> */}
             <Link href="/colaborador/cadastroColaborador">
               <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white" form="setting">Cadastrar Colaborador</button>
             </Link>
@@ -82,7 +82,7 @@ export default async function Colaborador() {
                     </Dialog>
                   </td>
                   <td className="py-4 px-5 border-b text-zinc-500">
-                    <ModaisColaborador colaborador={colaborado} index={index} key={colaborado.id} />
+                    <ModaisColaborador colaborador={colaborado} index={index} />
                   </td>
                 </tr>
               ))}

@@ -30,20 +30,20 @@ export interface ColaboradorUpgrade {
     nome: string;
     email: string;
     idade: string;
+    senha: string;
     role: "MEMBRO" | "GESTOR";
     regime_contratacao: "CLT" | "PJ";
-    areasAtuacaoColaborador?: Array<{
-        colaborador_id: number;
-        areaAtuacao_id: number;
-    }>;
-    ColaboradorProjeto?: Array<{
-        colaborador_id: number;
-        projeto_id: number;
-    }>;
 }
 
 export interface ColaboradorAreaAtuacao {
     areasAtuacaoColaborador:
+    {
+        areaAtuacao_id: number,
+        colaborador_id: number
+    }[],
+}
+export interface ColaboradorAreaAtuacaoDelete {
+    vinculos:
     {
         areaAtuacao_id: number,
         colaborador_id: number

@@ -1,5 +1,5 @@
 "use client"
-import { Colaborador } from "@/interface/colaborador";
+import { Colaborador, ColaboradorAreaAtuacao, ColaboradorAreaAtuacaoDelete } from "@/interface/colaborador";
 import { InputControl, InputLabel, InputPrefix, InputRoot, InputRootInside } from "./input";
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Loader, Mail, PlusCircle, User } from "lucide-react";
@@ -11,9 +11,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { colaboradorRequest } from "@/service/Colaborador/colaborador";
-import Select from "react-select"
+import Select, { ActionMeta, MultiValue } from "react-select"
 import makeAnimated from "react-select/animated"
-import { Projeto } from "@/interface/projeto";
+import { Projeto, ProjetoColaborador } from "@/interface/projeto";
 import { projetoRequest } from "@/service/Projeto/projeto";
 
 
@@ -23,9 +23,10 @@ interface IModal {
 }
 
 interface IMultiValue {
-    value: string
-    label: string
+    value: string;
+    label: string | undefined
 }
+
 
 export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
 
@@ -37,6 +38,7 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
             nome: "",
             email: "",
             idade: "",
+            senha: "",
             role: undefined,
             regime_contratacao: undefined,
         }
@@ -67,44 +69,69 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
     const novasAreas = areaAtuacao.map(lista => ({ value: lista.id.toString(), label: lista.area_atuacao }));
     const novasProjeto = projeto.map(lista => ({ value: lista.id.toString(), label: lista.nome }));
     const areaSelecionada = colaborador.areasAtuacaoColaborador?.map(lista => ({ value: String(lista.id_area_atuacao?.id), label: lista.id_area_atuacao?.area_atuacao }));
-    const projetoSelecionada = colaborador.ColaboradorProjeto?.map(lista => ({ value: String(lista.id_projeto?.id), label: lista.id_projeto?.nome }));
+    const projetoSelecionado = colaborador.ColaboradorProjeto?.map(lista => ({ value: String(lista.id_projeto?.id), label: lista.id_projeto?.nome }));
 
     useEffect(() => {
         setValue("nome", colaborador.nome);
         setValue("email", colaborador.email);
         setValue("idade", colaborador.idade);
         setValue("role", colaborador.role);
+        setValue("senha", colaborador.senha || "")
         setValue("regime_contratacao", colaborador.regime_contratacao);
     }, [colaborador, setValue]);
 
     const router = useRouter()
+    
     const handleSubmitColaborador = async (data: colaboradorSchemaUpgrade) => {
         try {
-            await colaboradorRequest.upgrade({
-                id: colaborador.id ,
+            const vinculos = colaborador.areasAtuacaoColaborador?.map(vinculo => ({
+                colaborador_id: colaborador.id,
+                areaAtuacao_id: vinculo.id_area_atuacao?.id || 0,
+            })) ?? [];
+
+            const vinc: ColaboradorAreaAtuacaoDelete = {
+                vinculos: vinculos
+            }
+            await colaboradorRequest.deleteColaboradorAreaAtuacao(vinc)
+
+            await colaboradorRequest.update({
+                id: colaborador.id,
                 nome: data.nome,
                 email: data.email,
                 idade: data.idade,
+                senha: data.senha,
                 regime_contratacao: data.regime_contratacao,
                 role: data.role,
-                areasAtuacaoColaborador: areaColaborador.map((area) => ({
-                    colaborador_id: colaborador.id,
-                    areaAtuacao_id: Number(area.value),
-                })),
-                ColaboradorProjeto: projetoColaborador.map((pro) => ({
-                    colaborador_id: colaborador.id,
-                    projeto_id: Number(pro.value),
-                }))
             })
-            router.push("/colaborador");
+
+            const areasAtuacaoColaborador = areaColaborador.map(area => ({
+                colaborador_id: colaborador.id,
+                areaAtuacao_id: parseInt(area.value),
+            }));
+
+            const colaboradorProjetoData = projetoColaborador.map(projeto => ({
+                colaborador_id: colaborador.id,
+                projeto_id: parseInt(projeto.value),
+            }));
+
+            const area: ColaboradorAreaAtuacao = {
+                areasAtuacaoColaborador: areasAtuacaoColaborador
+            }
+
+            const projeto: ProjetoColaborador = {
+                ColaboradorProjeto: colaboradorProjetoData
+            }
+            
+            await colaboradorRequest.createColaboradorAreaAtuacao(area)
+            await projetoRequest.createProjetoColaborador(projeto)
+
+            router.refresh()
             Sucesso("Colaborador editado com sucesso !")
-            reset()
         } catch (error) {
             Error("Erro ao editar colaborador")
             console.log(error)
         }
     }
-
     return (
         <Drawer>
             <DrawerTrigger>
@@ -151,31 +178,6 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
                             </span>
                         }
                     </div>
-                    {/* <div className="flex">
-                        <InputRoot>
-                            <InputLabel>Área Atuação</InputLabel>
-                            <Select
-                                isMulti
-                                onChange={(item) => setAreaColaborador([...item])}
-                                defaultValue={areaSelecionada}
-                                options={novasAreas}
-                                className="w-full border-white"
-                                components={makeComponent}
-
-                            />
-                        </InputRoot>
-                        <InputRoot>
-                            <InputLabel>Projeto</InputLabel>
-                            <Select
-                                isMulti
-                                defaultValue={projetoSelecionada}
-                                onChange={(item) => setProjetoColaborador([...item])}
-                                options={novasProjeto}
-                                components={makeComponent}
-                                className="w-full border-white"
-                            />
-                        </InputRoot>
-                    </div> */}
                     <div className="flex">
                         <InputRoot>
                             <InputLabel>Idade</InputLabel>
@@ -225,23 +227,64 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
                             </span>
                         }
                     </div>
+                    <div className="">
+                        <div className="flex justify-between p-3">
+                            <InputRoot>
+                                <InputLabel className="text-sm font-medium text-zinc-700">Área Atuação</InputLabel>
+                                <Select
+                                    isMulti
+                                    defaultValue={areaSelecionada}
+                                    onChange={(newValue: MultiValue<IMultiValue>, actionMeta: ActionMeta<IMultiValue>) => {
+                                        if (newValue) {
+                                            setAreaColaborador(newValue.map(item => ({ value: item.value, label: item.label })));
+                                        } else {
+                                            setAreaColaborador([]);
+                                        }
+                                    }}
+                                    options={novasAreas}
+                                    className="w-full border-white"
+                                    components={makeComponent}
+                                />
+
+                            </InputRoot>
+                            <InputRoot>
+                                <InputLabel className="text-sm font-medium text-zinc-700">Projeto</InputLabel>
+                                <Select
+                                    isMulti
+                                    defaultValue={projetoSelecionado}
+                                    onChange={(newValue: MultiValue<IMultiValue>, actionMeta: ActionMeta<IMultiValue>) => {
+                                        if (newValue) {
+                                            setProjetoColaborador(newValue.map(item => ({ value: item.value, label: item.label })));
+                                        } else {
+                                            setProjetoColaborador([]);
+                                        }
+                                    }}
+                                    options={novasProjeto}
+                                    components={makeComponent}
+                                    className="w-full border-white"
+                                />
+                            </InputRoot>
+                        </div>
+                    </div>
 
 
                     <div className="flex justify-center items-center pb-1">
-                        <button
-                            type="submit"
-                            className={`text-black font-bold ${formState.isSubmitting
-                                ? "cursor-not-allowed bg-cyan-950 text-white"
-                                : "bg-cyan-950 cursor-pointer text-white"
-                                } w-[100px] rounded-md h-10 flex justify-center items-center`}
-                            disabled={formState.isSubmitting}
-                        >
-                            {formState.isSubmitting ? (
-                                <Loader type="TailSpin" color="white" height={27} width={27} className="cursor-not-allowed " />
-                            ) : (
-                                "Salvar"
-                            )}
-                        </button>
+                        <DrawerTrigger>
+                            <button
+                                type="submit"
+                                className={`text-black font-bold ${formState.isSubmitting
+                                    ? "cursor-not-allowed bg-cyan-950 text-white"
+                                    : "bg-cyan-950 cursor-pointer text-white"
+                                    } w-[100px] rounded-md h-10 flex justify-center items-center`}
+                                disabled={formState.isSubmitting}
+                            >
+                                {formState.isSubmitting ? (
+                                    <Loader type="TailSpin" color="white" height={27} width={27} className="cursor-not-allowed " />
+                                ) : (
+                                    "Salvar"
+                                )}
+                            </button>
+                        </DrawerTrigger>
                     </div>
                 </form>
             </DrawerContent>
