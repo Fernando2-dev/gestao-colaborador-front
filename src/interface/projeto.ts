@@ -65,3 +65,10 @@ export interface ProjetoColaboradorDelete {
     }[],
 
 }
+export interface ProjetoTecnologia {
+    projetoTecnologia: {
+        projeto_id: number,
+        tecnologia_id: number
+    }[],
+
+}

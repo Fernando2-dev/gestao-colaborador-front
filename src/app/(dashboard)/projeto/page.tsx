@@ -21,7 +21,7 @@ export default async function Projeto() {
           </div>
           <div className="flex items-center gap-2">
             <ModalTecnologia tecnologia={tecnologia} />
-            <Link href="/projeto/created">
+            <Link href="/projeto/cadastro">
               <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white" form="setting">Cadastrar Projeto</button>
             </Link>
           </div>

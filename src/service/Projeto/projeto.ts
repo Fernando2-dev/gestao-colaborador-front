@@ -1,7 +1,7 @@
 import { URL_API } from "@/utils/constante";
 import { tokenService } from "../Auth/tokenService";
 import axios from "axios";
-import { Projeto, ProjetoColaborador, ProjetoColaboradorDelete } from "@/interface/projeto";
+import { Projeto, ProjetoColaborador, ProjetoColaboradorDelete, ProjetoTecnologia } from "@/interface/projeto";
 import { Tecnologia } from "@/interface/tecnologia";
 import { ProjetoUpdate } from "@/interface/projeto";
 
@@ -40,15 +40,22 @@ export const projetoRequest = {
   },
 
   async create(dados: Projeto) {
-    const resposta = await fetch(`${URL_API}/projeto`, {
-      method: "POST",
-      headers: {
-        "Authorization": `${token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(dados)
-    })
-    return resposta
+    try {
+      const resposta = await fetch(`${URL_API}/projeto`, {
+        method: "POST",
+        headers: {
+          "Authorization": `${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
+      });
+  
+      const corpoResposta = await resposta.json();
+      return { dados: corpoResposta };
+    } catch (error) {
+      
+      return { error }; 
+    }
   },
   async createProjetoColaborador(dados: ProjetoColaborador) {
     const resposta = await fetch(`${URL_API}/projeto/colaborador`, {
@@ -83,7 +90,17 @@ export const projetoRequest = {
       throw error;
     }
   },
-
+  async createProjetoTecnologia(dados: ProjetoTecnologia) {
+    const resposta = await fetch(`${URL_API}/projeto/projetoTecnologia`, {
+      method: "POST",
+      headers: {
+        "Authorization": `${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(dados)
+    })
+    return resposta;
+  },
   async createTecnologia(dados: Tecnologia) {
     const resposta = await fetch(`${URL_API}/projeto/tecnologia`, {
       method: "POST",
