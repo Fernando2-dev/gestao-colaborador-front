@@ -1,9 +1,18 @@
-import { LogOut, Search, SquareStack, Users } from "lucide-react"
+import { Search, SquareStack, Users } from "lucide-react"
 import { Logo } from "./logo"
 import { NaviItem } from "./naveItem"
 import { InputControl, InputPrefix, InputRoot, InputRootInside } from "../input"
+import { colaboradorRequest } from "@/service/Colaborador/colaborador";
+import { getServerSession } from "next-auth";
+import { nextAuthOptions } from "@/app/api/auth/[...nextauth]/route";
+import { ButtonLogout } from "../buttonLogout";
 
-export const Sidebar = () => {
+
+
+export const Sidebar = async () => {
+    const session = await getServerSession(nextAuthOptions)
+    const token: string | undefined = session?.user.token;
+    const profile = await colaboradorRequest.readProfile(token)
     return (
         <aside className='flex flex-col items-center border-r border-zinc-200 px-8 py-8'>
             <div className="flex flex-col flex-1 gap-6 ">
@@ -31,12 +40,11 @@ export const Sidebar = () => {
                     alt=""
                 />
                 <div className="flex flex-1 flex-col truncate">
-                    <span className="text-sm font-semibold text-zinc-700">Fernando Henrique</span>
-                    <span className="truncate text-sm text-zinc-500 ">feroficialvolei@gmail.com</span>
+                    <span className="text-sm font-semibold text-zinc-700">{profile.user.nome}</span>
+                    <span className="truncate text-sm text-zinc-500 ">{profile.user.role}</span>
+                    <span className="truncate text-sm text-zinc-500 ">{profile.user.email}</span>
                 </div>
-                <button type="button" className="group ml-auto p-2 hover:bg-zinc-500 rounded-md">
-                    <LogOut className="h-5 w-5 text-zinc-500 group-hover:text-white" />
-                </button>
+                <ButtonLogout />
             </div>
         </aside>
     )

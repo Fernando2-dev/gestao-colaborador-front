@@ -72,3 +72,10 @@ export interface ProjetoTecnologia {
     }[],
 
 }
+export interface ProjetoTecnologiaDelete {
+    vinculoTecnologia: {
+        projeto_id: number,
+        tecnologia_id: number
+    }[],
+
+}

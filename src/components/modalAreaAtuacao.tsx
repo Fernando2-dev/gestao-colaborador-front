@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { areaAtuacaoSchema } from "@/validacao/validacaoAreaAtuacao";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
 
 
 interface IAreaAtuacao {
@@ -21,6 +22,7 @@ export const ModalAreaAtuacao = ({ areaAtuacao }: IAreaAtuacao) => {
     type createNewAreaAtuacao = z.infer<typeof areaAtuacaoSchema>
     const { Sucesso, Error } = useContext(MensagemContext)
     const [areas, setAreas] = useState<AreaAtuacao[]>(areaAtuacao);
+    const session = useSession()
 
 
     const { handleSubmit, register, formState, reset } = useForm<createNewAreaAtuacao>({
@@ -32,7 +34,7 @@ export const ModalAreaAtuacao = ({ areaAtuacao }: IAreaAtuacao) => {
             await colaboradorRequest.createAreaAtuacao({
                 id: 0,
                 area_atuacao: data.area_atuacao
-            })
+            }, session.data?.user.token)
             Sucesso("Area de atuação cadastrada com sucesso !")
             reset()
         } catch (error) {
@@ -45,7 +47,7 @@ export const ModalAreaAtuacao = ({ areaAtuacao }: IAreaAtuacao) => {
     const handleAreaAtuacaoDelete = async (id: number) => {
         try {
             Sucesso("Area Atuação deletado com sucesso !")
-            await colaboradorRequest.deleteAreaAtuacao(id)
+            await colaboradorRequest.deleteAreaAtuacao(id, session.data?.user.token)
             setAreas(state => state.filter(stat => { return stat.id != id }))
         } catch (error) {
             Error("Erro ao Deletar Area Atuação")

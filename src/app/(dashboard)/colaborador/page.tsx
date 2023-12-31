@@ -1,14 +1,26 @@
+import { nextAuthOptions } from "@/app/api/auth/[...nextauth]/route";
 import { ModaisColaborador } from "@/components/modaisColaborador";
 import { ModalAreaAtuacao } from "@/components/modalAreaAtuacao";
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
+import { Colaborador } from "@/interface/colaborador";
 import { colaboradorRequest } from "@/service/Colaborador/colaborador"
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
+
 export default async function Colaborador() {
-  const colaborador = await colaboradorRequest.read();
-  const areaAtuacao = await colaboradorRequest.readArea()
+  const session = await getServerSession(nextAuthOptions)
+  const token: string | undefined = session?.user.token;
+
+  const colaborador = await colaboradorRequest.read(token);
+  const areaAtuacao = await colaboradorRequest.readArea(token)
+  const profile = await colaboradorRequest.readProfile(token)
+
+  
+ 
 
   return (
     <>
@@ -19,15 +31,14 @@ export default async function Colaborador() {
             <h2 className="text-lg font-medium text-zinc-700">Perfil de todos os colaboradores</h2>
             <span className="text-sm font-medium text-zinc-500">acompanhe mais informações nas tabelas seguintes</span>
           </div>
-          <div className="flex items-center gap-2">
-            <ModalAreaAtuacao areaAtuacao={areaAtuacao} />
-            {/* <Link href="/colaborador/cadastroVinculo">
-              <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-emerald-800 text-white" form="setting">Vinculo Colaborador</button>
-            </Link> */}
-            <Link href="/colaborador/cadastroColaborador">
-              <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white" form="setting">Cadastrar Colaborador</button>
-            </Link>
-          </div>
+          {profile.user.role === "GESTOR" ? (
+            <div className="flex items-center gap-2">
+              <ModalAreaAtuacao areaAtuacao={areaAtuacao}/>
+              <Link href="/colaborador/cadastroColaborador">
+                <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white" form="setting">Cadastrar Colaborador</button>
+              </Link>
+            </div>
+          ) : null}
         </div>
         <div className="shadow-md p-12 mt-4">
           <table className="w-full border-zinc-100 rounded-lg bg-white">
@@ -47,11 +58,13 @@ export default async function Colaborador() {
                 <tr className="hover:bg-gray-100" key={colaborado.id}>
                   <td className="py-4 px-5 border-b text-black font-semibold">{colaborado.nome}</td>
                   <td className="py-4 px-5 border-b text-zinc-500">{colaborado.email}</td>
-                  <td className="py-4 px-5 border-b text-zinc-500">{colaborado.regime_contratacao}</td>
+                  { profile.user.role === "GESTOR" ?
+                    (<td className="py-4 px-5 border-b text-zinc-500">{colaborado.regime_contratacao}</td>)
+                    : (<td className="py-4 px-5 border-b text-zinc-500">...</td>)}
                   <td className="py-4 px-5 border-b text-zinc-500">{colaborado.role}</td>
                   <td className="py-4 px-5 border-b text-zinc-500">
                     <Dialog>
-                      <DialogTrigger asChild>
+                      <DialogTrigger asChild >
                         <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm border border-violet-400 text-black" form="setting">Áreas</button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[425px]">
@@ -82,7 +95,7 @@ export default async function Colaborador() {
                     </Dialog>
                   </td>
                   <td className="py-4 px-5 border-b text-zinc-500">
-                    <ModaisColaborador colaborador={colaborado} index={index} />
+                    <ModaisColaborador colaborador={colaborado} index={index} profile={profile}/>
                   </td>
                 </tr>
               ))}

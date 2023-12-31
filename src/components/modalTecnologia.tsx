@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Tecnologia } from "@/interface/tecnologia";
 import { tecnologiaSchema } from "@/validacao/validacaoTecnologia";
 import { projetoRequest } from "@/service/Projeto/projeto";
+import { useSession } from "next-auth/react";
 
 
 interface ITecnologia {
@@ -23,6 +24,7 @@ export const ModalTecnologia= ({ tecnologia }: ITecnologia) => {
     type createNewAreaTecnologia = z.infer<typeof tecnologiaSchema>
     const { Sucesso, Error } = useContext(MensagemContext)
     const [tec, setTec] = useState<Tecnologia[]>(tecnologia);
+    const session = useSession()
 
 
     const { handleSubmit, register, formState, reset, watch } = useForm<createNewAreaTecnologia>({
@@ -34,7 +36,7 @@ export const ModalTecnologia= ({ tecnologia }: ITecnologia) => {
             await projetoRequest.createTecnologia({
                 id: 0,
                 nome_tecnologia: data.nome_tecnologia
-            })
+            }, session.data?.user.token)
             Sucesso("Tecnologia cadastrada com sucesso !")
             reset()
         } catch (error) {
@@ -47,7 +49,7 @@ export const ModalTecnologia= ({ tecnologia }: ITecnologia) => {
     const handleTecnologiaDelete = async (id: number) => {
         try {
             Sucesso("Tecnologia deletado com sucesso !")
-            await projetoRequest.deleteTecnologia(id)
+            await projetoRequest.deleteTecnologia(id, session.data?.user.token)
             setTec(state => state.filter(stat => { return stat.id != id }))
         } catch (error) {
             Error("Erro ao Deletar Tecnologia")

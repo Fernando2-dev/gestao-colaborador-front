@@ -15,10 +15,12 @@ import Select, { ActionMeta, MultiValue } from "react-select"
 import makeAnimated from "react-select/animated"
 import { Projeto, ProjetoColaborador, ProjetoColaboradorDelete } from "@/interface/projeto";
 import { projetoRequest } from "@/service/Projeto/projeto";
+import { useSession } from "next-auth/react";
 
 
 interface IModal {
     colaborador: Colaborador;
+    profile: Perfil
     index: number
 }
 
@@ -28,7 +30,7 @@ interface IMultiValue {
 }
 
 
-export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
+export const ModalEdicaoColaborador = ({ colaborador, profile }: IModal) => {
 
     type colaboradorSchemaUpgrade = z.infer<typeof ColaboradorSchemaUpgrade>
 
@@ -52,18 +54,19 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
     const [areaColaborador, setAreaColaborador] = useState<IMultiValue[]>([]);
     const [projetoColaborador, setProjetoColaborador] = useState<IMultiValue[]>([])
     const makeComponent = makeAnimated()
+    const session = useSession()
 
     useEffect(() => {
 
         const readArea = async () => {
-            const resposta = await colaboradorRequest.readArea()
+            const resposta = await colaboradorRequest.readArea(session.data?.user.token)
             setAreaAtuacao(resposta)
 
-            const projetoRes = await projetoRequest.read()
+            const projetoRes = await projetoRequest.read(session.data?.user.token)
             setProjeto(projetoRes)
         }
         readArea()
-    }, [])
+    }, [session.data?.user.token])
 
 
     const novasAreas = areaAtuacao.map(lista => ({ value: lista.id.toString(), label: lista.area_atuacao }));
@@ -100,8 +103,8 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
             const vincprojeto: ProjetoColaboradorDelete = {
                 vinculoProjeto: vinculoProjeto
             }
-            await colaboradorRequest.deleteColaboradorAreaAtuacao(vinc)
-            await projetoRequest.deleteColaboradorProjeto(vincprojeto)
+            await colaboradorRequest.deleteColaboradorAreaAtuacao(vinc, session.data?.user.token)
+            await projetoRequest.deleteColaboradorProjeto(vincprojeto, session.data?.user.token)
 
             await colaboradorRequest.update({
                 id: colaborador.id,
@@ -111,7 +114,7 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
                 senha: data.senha,
                 regime_contratacao: data.regime_contratacao,
                 role: data.role,
-            })
+            }, session.data?.user.token)
 
             const areasAtuacaoColaborador = areaColaborador.map(area => ({
                 colaborador_id: colaborador.id,
@@ -131,8 +134,8 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
                 ColaboradorProjeto: colaboradorProjetoData
             }
 
-            await colaboradorRequest.createColaboradorAreaAtuacao(area)
-            await projetoRequest.createProjetoColaborador(projeto)
+            await colaboradorRequest.createColaboradorAreaAtuacao(area, session.data?.user.token)
+            await projetoRequest.createProjetoColaborador(projeto, session.data?.user.token)
 
             router.refresh()
             Sucesso("Colaborador editado com sucesso !")
@@ -143,9 +146,10 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
     }
     return (
         <Drawer>
-            <DrawerTrigger>
-                <PlusCircle className="h-6 w-6 cursor-pointer" />
-            </DrawerTrigger>
+              {profile.user.role === "GESTOR" ?
+                (<DrawerTrigger asChild>
+                    <PlusCircle className="h-6 w-6 cursor-pointer" />
+                </DrawerTrigger>) : null }
             <DrawerContent>
                 <form className="flex flex-col space-y-5 m-16" onSubmit={handleSubmit(handleSubmitColaborador)}>
                     <div className="flex">

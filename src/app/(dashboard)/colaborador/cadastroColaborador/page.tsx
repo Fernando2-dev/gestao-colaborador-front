@@ -15,6 +15,7 @@ import { projetoRequest } from "@/service/Projeto/projeto";
 import Select, { ActionMeta, MultiValue } from "react-select"
 import makeAnimated from "react-select/animated"
 import { ColaboradorAreaAtuacao } from "@/interface/colaborador";
+import { useSession } from "next-auth/react";
 
 interface IMultiValue {
   value: string
@@ -30,23 +31,23 @@ const CadastroColaborador = () => {
 
   const router = useRouter();
   const { Sucesso, Error } = useContext(MensagemContext)
-
   const [areaAtuacao, setAreaAtuacao] = useState<AreaAtuacao[]>([])
   const [projeto, setProjeto] = useState<Projeto[]>([])
   const [areaColaborador, setAreaColaborador] = useState<IMultiValue[]>([]);
   const [projetoColaborador, setProjetoColaborador] = useState<IMultiValue[]>([])
+  const session = useSession()
 
   useEffect(() => {
 
     const readArea = async () => {
-      const resposta = await colaboradorRequest.readArea()
+      const resposta = await colaboradorRequest.readArea(session.data?.user.token)
       setAreaAtuacao(resposta)
 
-      const projetoRes = await projetoRequest.read()
+      const projetoRes = await projetoRequest.read(session.data?.user.token)
       setProjeto(projetoRes)
     }
     readArea()
-  }, [])
+  }, [session])
 
   const novasAreas = areaAtuacao.map(lista => ({ value: lista.id.toString(), label: lista.area_atuacao }));
   const novasProjeto = projeto.map(lista => ({ value: lista.id.toString(), label: lista.nome }));
@@ -64,7 +65,7 @@ const CadastroColaborador = () => {
         senha: data.senha,
         regime_contratacao: data.regime_contratacao,
       };
-      const { dados } = await colaboradorRequest.create(colaboradorData);    
+      const { dados } = await colaboradorRequest.create(colaboradorData, session.data?.user.token);    
      
       const areasAtuacaoColaborador = areaColaborador.map(area => ({
         colaborador_id: dados.colaborador.id,
@@ -83,8 +84,8 @@ const CadastroColaborador = () => {
       const projeto: ProjetoColaborador = {
         ColaboradorProjeto: colaboradorProjetoData
       }
-      await colaboradorRequest.createColaboradorAreaAtuacao(area)
-      await projetoRequest.createProjetoColaborador(projeto)
+      await colaboradorRequest.createColaboradorAreaAtuacao(area, session.data?.user.token)
+      await projetoRequest.createProjetoColaborador(projeto, session.data?.user.token)
 
       Sucesso("Colaborador cadastrado com sucesso");
       router.push("/colaborador");

@@ -8,13 +8,15 @@ import { Colaborador } from "@/interface/colaborador";
 import { InputControl, InputLabel, InputPrefix, InputRoot, InputRootInside } from "./input";
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Eye, Mail, User } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 interface IModal {
     colaborador: Colaborador;
+    profile: Perfil
     index: number
 }
 
-export const ModalVisualizacaoColaborador = ({ colaborador }: IModal) => {
+export const ModalVisualizacaoColaborador = ({ colaborador, profile }: IModal) => {
     type Colaborador = z.infer<typeof ColaboradorSchema>
     const { register, setValue } = useForm<Colaborador>({
         resolver: zodResolver(ColaboradorSchema),
@@ -34,7 +36,6 @@ export const ModalVisualizacaoColaborador = ({ colaborador }: IModal) => {
         setValue("role", colaborador.role);
         setValue("regime_contratacao", colaborador.regime_contratacao);
     }, [colaborador, setValue]);
-
 
     return (
         <Drawer>
@@ -99,11 +100,16 @@ export const ModalVisualizacaoColaborador = ({ colaborador }: IModal) => {
                         <InputRoot>
                             <InputLabel>Regime Contratação</InputLabel>
                             <InputRootInside>
-                                <InputControl
+                                {profile.user.role === "GESTOR" ? (<InputControl
                                     type="text"
                                     {...register("regime_contratacao")}
                                     disabled
-                                />
+                                />) : (<InputControl
+                                    type="text"
+                                    placeholder="..."
+                                    disabled
+                                />)}
+
                             </InputRootInside>
                         </InputRoot>
                     </div>
@@ -120,7 +126,7 @@ export const ModalVisualizacaoColaborador = ({ colaborador }: IModal) => {
                                 </div>
                             ))}
                         </div>
-                        
+
                         <div className="flex gap-3 flex-wrap">
                             {colaborador.ColaboradorProjeto?.map(area => (
                                 <div key={area.id_projeto?.id}>

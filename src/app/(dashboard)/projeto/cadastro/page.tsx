@@ -16,6 +16,7 @@ import { colaboradorRequest } from "@/service/Colaborador/colaborador";
 import { Colaborador } from "@/interface/colaborador";
 import { Tecnologia } from "@/interface/tecnologia";
 import { ProjetoColaborador, ProjetoTecnologia } from "@/interface/projeto";
+import { useSession } from "next-auth/react";
 
 interface IMultiValue {
     value: string
@@ -37,14 +38,15 @@ const Cadastro = () => {
     const [tecnologia, setTecnologia] = useState<Tecnologia[]>([])
     const [projetoColaborador, setProjetoColaborador] = useState<IMultiValue[]>([]);
     const [projetoTecnologias, setProjetoTecnologia] = useState<IMultiValue[]>([])
-  
+    const session = useSession()
+    
     useEffect(() => {
   
       const read = async () => {
-        const respostaColaborador = await colaboradorRequest.read()
+        const respostaColaborador = await colaboradorRequest.read(session.data?.user.token)
         setColaborador(respostaColaborador)
   
-        const respostaTecnologia = await projetoRequest.readTecnologia()
+        const respostaTecnologia = await projetoRequest.readTecnologia(session.data?.user.token)
         setTecnologia(respostaTecnologia)
       }
       read()
@@ -61,7 +63,7 @@ const Cadastro = () => {
                 nome: data.nome,
                 prazo: data.prazo,
                 descricao: data.descricao,
-              });
+              }, session.data?.user.token);
 
             const projetoTecnologia = projetoTecnologias.map(area => ({
                 projeto_id: dados.projeto.id,
@@ -81,8 +83,8 @@ const Cadastro = () => {
                 ColaboradorProjeto: colaboradorProjetoData
               }
 
-              await projetoRequest.createProjetoTecnologia(tecno)
-              await projetoRequest.createProjetoColaborador(colaborador)
+              await projetoRequest.createProjetoTecnologia(tecno, session.data?.user.token)
+              await projetoRequest.createProjetoColaborador(colaborador, session.data?.user.token)
             Sucesso("Projeto cadastrado com sucesso")
             router.refresh()
             router.push("/projeto");

@@ -6,18 +6,21 @@ import { MensagemContext } from "@/context/ContextMensagemProvider";
 import { useRouter } from "next/navigation";
 import { Projeto } from "@/interface/projeto";
 import { projetoRequest } from "@/service/Projeto/projeto";
+import { useSession } from "next-auth/react";
 
 interface IModal {
     projeto: Projeto;
+    profile: Perfil
 }
 
-export const ModalExcluirProjeto = ({ projeto }: IModal) => {
+export const ModalExcluirProjeto = ({ projeto, profile }: IModal) => {
     const { Sucesso, Error } = useContext(MensagemContext);
     const router = useRouter();
+    const session = useSession()
 
     const handleDeleteProjeto = async (id: number) => {
         try {
-            await projetoRequest.delete(id);
+            await projetoRequest.delete(id, session.data?.user.token);
             Sucesso("Projeto deletado com sucesso !");
             router.refresh();
         } catch (error) {
@@ -28,9 +31,12 @@ export const ModalExcluirProjeto = ({ projeto }: IModal) => {
 
     return (
         <Dialog>
-            <DialogTrigger asChild>
-                <XCircle className="h-6 w-6 text-red-500 cursor-pointer" />
-            </DialogTrigger>
+            {profile.user.role === "GESTOR" ? (
+                <DialogTrigger asChild>
+                    <XCircle className="h-6 w-6 text-red-500 cursor-pointer" />
+                </DialogTrigger>
+            ) :null}
+
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader className="font-semibold">Tem certeza que deseja excluir esse Projeto ?</DialogHeader>
                 <div className="flex gap-4 justify-end items-center">

@@ -1,13 +1,19 @@
 import { URL_API } from "@/utils/constante"
-import { tokenService } from "../Auth/tokenService"
 import axios from "axios"
 import { Colaborador, ColaboradorAreaAtuacao, ColaboradorAreaAtuacaoDelete, ColaboradorUpgrade } from "@/interface/colaborador"
-import { ProjetoColaboradorDelete } from "@/interface/projeto";
 
-const token = tokenService.get();
+
 export const colaboradorRequest = {
-  async read(): Promise<Colaborador[]> {
-
+  async readProfile(token: string | undefined){
+      const resposta = await axios.get<Perfil>(`${URL_API}/colaborador/perfil`,{
+          headers: {
+              authorization: `Bearer ${token}`
+          }
+      })
+      return resposta.data  
+  },
+  async read(token: string | undefined): Promise<Colaborador[]> {
+   
     const resposta = await fetch(`${URL_API}/colaborador`, {
       headers: {
         "Authorization": `Bearer ${token}`
@@ -19,7 +25,7 @@ export const colaboradorRequest = {
     return colaborador;
   },
 
-  async readArea(): Promise<AreaAtuacao[]> {
+  async readArea(token: string | undefined): Promise<AreaAtuacao[]> {
     const resposta = await fetch(`${URL_API}/colaborador/areaAtuacao`, {
       headers: {
         "Authorization": `Bearer ${token}`
@@ -29,11 +35,11 @@ export const colaboradorRequest = {
     return area;
   },
 
-  async createAreaAtuacao(dados: AreaAtuacao) {
+  async createAreaAtuacao(dados: AreaAtuacao, token: string | undefined) {
     const resposta = await fetch(`${URL_API}/colaborador/areaAtuacao`, {
       method: "POST",
       headers: {
-        "Authorization": `${token}`,
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(dados),
@@ -42,11 +48,12 @@ export const colaboradorRequest = {
     return resposta;
   },
 
-  async readId(id: number): Promise<Colaborador> {
+  async readId(id: number, token: string | undefined): Promise<Colaborador> {
+    
     try {
       const response = await axios.get<Colaborador>(`${URL_API}/colaborador/${id}`, {
         headers: {
-          "Authorization": `${token}`
+          "Authorization": `Bearer ${token}`
         }
       });
       return response.data;
@@ -55,11 +62,11 @@ export const colaboradorRequest = {
     }
   },
 
-  async create(dados: Colaborador) {
+  async create(dados: Colaborador, token: string | undefined) {
     const resposta = await fetch(`${URL_API}/colaborador`, {
       method: "POST",
       headers: {
-        "Authorization": `${token}`,
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(dados)
@@ -74,14 +81,15 @@ export const colaboradorRequest = {
     }
   },
 
-  async createColaboradorAreaAtuacao(dados: ColaboradorAreaAtuacao) {
+  async createColaboradorAreaAtuacao(dados: ColaboradorAreaAtuacao, token: string | undefined) {
+   
     try {
       const resposta = await axios.post<ColaboradorAreaAtuacao[]>(
         `${URL_API}/colaborador/areaAtuacaoColaborador`,
         dados, 
         {
           headers: {
-            Authorization: `${token}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -96,13 +104,13 @@ export const colaboradorRequest = {
     }
   },
 
-  async deleteColaboradorAreaAtuacao(dados: ColaboradorAreaAtuacaoDelete) {
+  async deleteColaboradorAreaAtuacao(dados: ColaboradorAreaAtuacaoDelete, token: string | undefined) {
     try {
       const resposta = await axios.delete(
         `${URL_API}/colaborador/areaAtuacaoColaborador`,
         {
           headers: {
-            Authorization: `${token}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data: dados
@@ -119,11 +127,11 @@ export const colaboradorRequest = {
   },
 
 
-  async update(dados: ColaboradorUpgrade) {
+  async update(dados: ColaboradorUpgrade, token: string | undefined) {
     const resposta = await fetch(`${URL_API}/colaborador`, {
       method: "PUT",
       headers: {
-        "Authorization": `${token}`,
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(dados)
@@ -131,25 +139,22 @@ export const colaboradorRequest = {
     return resposta;
   },
 
-  async delete(id: number) {
+  async delete(id: number, token: string | undefined) {
     await fetch(`${URL_API}/colaborador/${id}`, {
       method: "DELETE",
       headers: {
-        "Authorization": `${token}`
+        "Authorization": `Bearer ${token}`
       },
       cache: "no-store"
     },)
   },
-  async deleteAreaAtuacao(id: number) {
+  async deleteAreaAtuacao(id: number, token: string | undefined) {
     await fetch(`${URL_API}/colaborador/areaAtuacao/${id}`, {
       method: "DELETE",
       headers: {
-        "Authorization": `${token}`
+        "Authorization": `Bearer ${token}`
       },
       cache: "no-store"
     },)
   },
-
-
-
 }

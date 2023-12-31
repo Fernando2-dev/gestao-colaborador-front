@@ -10,12 +10,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { colaboradorRequest } from "@/service/Colaborador/colaborador";
-import Select from "react-select"
+import Select, { ActionMeta, MultiValue } from "react-select"
 import makeAnimated from "react-select/animated"
-import { Projeto } from "@/interface/projeto";
+import { Projeto, ProjetoColaborador, ProjetoColaboradorDelete, ProjetoTecnologia, ProjetoTecnologiaDelete } from "@/interface/projeto";
 import { projetoRequest } from "@/service/Projeto/projeto";
 import { ProjetoSchema, ProjetoSchemaUpdate } from "@/validacao/validacaoProjeto";
 import { Tecnologia } from "@/interface/tecnologia";
+import { useSession } from "next-auth/react";
 
 
 interface IModal {
@@ -49,18 +50,19 @@ export const ModalEdicaoProjeto = ({ projeto }: IModal) => {
     const [tecnologiaProjeto, setTecnologiaProjeto] = useState<IMultiValue[]>([]);
     const [colaboradorProjeto, setColaboradorProjeto] = useState<IMultiValue[]>([])
     const makeComponent = makeAnimated()
+    const session = useSession()
 
     useEffect(() => {
 
         const readArea = async () => {
-            const resposta = await colaboradorRequest.read()
+            const resposta = await colaboradorRequest.read(session.data?.user.token)
             setColaborador(resposta)
 
-            const projetoRes = await projetoRequest.readTecnologia()
+            const projetoRes = await projetoRequest.readTecnologia(session.data?.user.token)
             setTecnologia(projetoRes)
         }
         readArea()
-    }, [])
+    }, [session])
 
 
     const novasTecnologias = tecnologia.map(lista => ({ value: lista.id.toString(), label: lista.nome_tecnologia }));
@@ -77,20 +79,54 @@ export const ModalEdicaoProjeto = ({ projeto }: IModal) => {
     const router = useRouter()
     const handleSubmitProjeto = async (data: projetoSchemaUpdate) => {
         try {
+            const vinculoTecnologia = projeto.projetoTecnologias?.map(vinculo => ({
+                projeto_id: projeto.id,
+                tecnologia_id: vinculo.id_tecnologia.id,
+            })) ?? [];
+
+            const vinculoProjeto = projeto.ColaboradorProjeto?.map(vinculo => ({
+                projeto_id: projeto.id,
+                colaborador_id: vinculo.id_colaborador.id,
+            })) ?? [];
+
+
+            const vinc: ProjetoTecnologiaDelete = {
+                vinculoTecnologia: vinculoTecnologia
+            }
+            const vincColaborador: ProjetoColaboradorDelete = {
+                vinculoProjeto: vinculoProjeto
+            }
+
+            await projetoRequest.deleteTecnologiaProjeto(vinc, session.data?.user.token)
+            await projetoRequest.deleteColaboradorProjeto(vincColaborador, session.data?.user.token)
+
             await projetoRequest.update({
                 id: projeto.id,
                 nome: data.nome,
                 prazo: data.prazo,
                 descricao: data.descricao,
-                ColaboradorProjeto: colaboradorProjeto.map((pro) => ({
-                    colaborador_id: Number(pro.value),
-                    projeto_id: projeto.id,
-                })),
-                projetoTecnologias: tecnologiaProjeto.map((pro) => ({
-                    tecnologia_id: Number(pro.value),
-                    projeto_id: projeto.id,
-                }))
-            });
+            }, session.data?.user.token);
+
+            const projetoTecnologia = tecnologiaProjeto.map(area => ({
+                projeto_id: projeto.id,
+                tecnologia_id: parseInt(area.value),
+            }));
+
+            const ColaboradorProjeto = colaboradorProjeto.map(colaborador => ({
+                colaborador_id: parseInt(colaborador.value),
+                projeto_id: projeto.id,
+            }));
+
+            const tecno: ProjetoTecnologia = {
+                projetoTecnologia: projetoTecnologia
+            }
+
+            const colaborador: ProjetoColaborador = {
+                ColaboradorProjeto: ColaboradorProjeto
+            }
+
+            await projetoRequest.createProjetoTecnologia(tecno, session.data?.user.token)
+            await projetoRequest.createProjetoColaborador(colaborador, session.data?.user.token)
             router.refresh();
             Sucesso("Projeto editado com sucesso !")
             reset()
@@ -164,47 +200,62 @@ export const ModalEdicaoProjeto = ({ projeto }: IModal) => {
                         }
                     </div>
 
-                    <div className="flex">
-                        <InputRoot>
-                            <InputLabel>Tecnologias</InputLabel>
-                            <Select
-                                isMulti
-                                onChange={(item) => setTecnologiaProjeto([...item])}
-                                defaultValue={tecnologiaSelecionada}
-                                options={novasTecnologias}
-                                className="w-full border-white"
-                                components={makeComponent}
-
-                            />
-                        </InputRoot>
-                        <InputRoot>
-                            <InputLabel>Colaboradores</InputLabel>
-                            <Select
-                                isMulti
-                                defaultValue={colaboradorSelecionado}
-                                onChange={(item) => setColaboradorProjeto([...item])}
-                                options={novosColaboradores}
-                                components={makeComponent}
-                                className="w-full border-white"
-                            />
-                        </InputRoot>
+                    <div className="">
+                        <div className="flex justify-between p-3">
+                            <InputRoot>
+                                <InputLabel className="text-sm font-medium text-zinc-700">Colaborador</InputLabel>
+                                <Select
+                                    isMulti
+                                    defaultValue={colaboradorSelecionado}
+                                    onChange={(newValue: MultiValue<IMultiValue>, actionMeta: ActionMeta<IMultiValue>) => {
+                                        if (newValue) {
+                                            setColaboradorProjeto(newValue.map(item => ({ value: item.value, label: item.label })));
+                                        } else {
+                                            setColaboradorProjeto([]);
+                                        }
+                                    }}
+                                    options={novosColaboradores}
+                                    className="w-full border-white"
+                                    components={makeComponent}
+                                />
+                            </InputRoot>
+                            <InputRoot>
+                                <InputLabel className="text-sm font-medium text-zinc-700">Tecnologia</InputLabel>
+                                <Select
+                                    isMulti
+                                    defaultValue={tecnologiaSelecionada}
+                                    onChange={(newValue: MultiValue<IMultiValue>, actionMeta: ActionMeta<IMultiValue>) => {
+                                        if (newValue) {
+                                            setTecnologiaProjeto(newValue.map(item => ({ value: item.value, label: item.label })));
+                                        } else {
+                                            setTecnologiaProjeto([]);
+                                        }
+                                    }}
+                                    options={novasTecnologias}
+                                    components={makeComponent}
+                                    className="w-full border-white"
+                                />
+                            </InputRoot>
+                        </div>
                     </div>
 
                     <div className="flex justify-center items-center pb-1">
-                        <button
-                            type="submit"
-                            className={`text-black font-bold ${formState.isSubmitting
-                                ? "cursor-not-allowed bg-cyan-950 text-white"
-                                : "bg-cyan-950 cursor-pointer text-white"
-                                } w-[100px] rounded-md h-10 flex justify-center items-center`}
-                            disabled={formState.isSubmitting}
-                        >
-                            {formState.isSubmitting ? (
-                                <Loader type="TailSpin" color="white" height={27} width={27} className="cursor-not-allowed " />
-                            ) : (
-                                "Salvar"
-                            )}
-                        </button>
+                        <DrawerTrigger>
+                            <button
+                                type="submit"
+                                className={`text-black font-bold ${formState.isSubmitting
+                                    ? "cursor-not-allowed bg-cyan-950 text-white"
+                                    : "bg-cyan-950 cursor-pointer text-white"
+                                    } w-[100px] rounded-md h-10 flex justify-center items-center`}
+                                disabled={formState.isSubmitting}
+                            >
+                                {formState.isSubmitting ? (
+                                    <Loader type="TailSpin" color="white" height={27} width={27} className="cursor-not-allowed " />
+                                ) : (
+                                    "Salvar"
+                                )}
+                            </button>
+                        </DrawerTrigger>
                     </div>
                 </form>
             </DrawerContent>

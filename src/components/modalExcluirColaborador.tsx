@@ -6,21 +6,24 @@ import { XCircle } from "lucide-react";
 import { colaboradorRequest } from "@/service/Colaborador/colaborador";
 import { MensagemContext } from "@/context/ContextMensagemProvider";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface IModal {
     colaborador: Colaborador;
+    profile: Perfil
     index: number
 }
 
-export const ModalExcluirColaborador = ({ colaborador }: IModal) => {
+export const ModalExcluirColaborador = ({ colaborador, profile }: IModal) => {
 
 
     const { Sucesso, Error } = useContext(MensagemContext)
     const router = useRouter()
+    const session = useSession()
 
     const handleDeleteClient = async (id: number) => {
         try {
-            await colaboradorRequest.delete(id)
+            await colaboradorRequest.delete(id, session.data?.user.token)
             Sucesso("Colaborador deletado com sucesso !")
             router.refresh()
         } catch (error) {
@@ -31,9 +34,10 @@ export const ModalExcluirColaborador = ({ colaborador }: IModal) => {
     };
     return (
         <Dialog>
-            <DialogTrigger asChild>
-                <XCircle className="h-6 w-6 text-red-500 cursor-pointer" />
-            </DialogTrigger>
+             {profile.user.role === "GESTOR" ?
+                (<DialogTrigger asChild>
+                     <XCircle className="h-6 w-6 text-red-500 cursor-pointer" />
+                </DialogTrigger>) : null }
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader className="font-semibold">Tem certeza que deseja excluir esse colaborador ?</DialogHeader>
                 <div className="flex gap-4 justify-end items-center">

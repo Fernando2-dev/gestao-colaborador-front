@@ -10,15 +10,10 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession(nextAuthOptions)
 
-  if(!session){
-    redirect('/')
+  if(session){
+    redirect('/colaborador')
   }
   return (
-        <section>
-          <div className='min-h-screen grid grid-cols-app bg-white'>
-            <Sidebar />
-            <main className='px-8 pb-12 pt-8'> {children}</main>
-          </div>
-        </section>
+        <>{children}</>
   )
 }

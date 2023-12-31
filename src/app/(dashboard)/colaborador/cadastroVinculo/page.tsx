@@ -11,6 +11,7 @@ import { projetoRequest } from "@/service/Projeto/projeto";
 import Select, { ActionMeta, MultiValue } from "react-select"
 import makeAnimated from "react-select/animated"
 import { Colaborador, ColaboradorAreaAtuacao } from "@/interface/colaborador";
+import { useSession } from "next-auth/react";
 
 interface IMultiValue {
     value: string
@@ -31,21 +32,22 @@ const CadastroVinculo = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [colaborador, setColaborador] = useState<Colaborador[]>([])
     const [colaboradorValue, setColaboradorValue] = useState("")
+    const session = useSession()
 
     useEffect(() => {
 
         const readArea = async () => {
-            const colaborador = await colaboradorRequest.read()
+            const colaborador = await colaboradorRequest.read(session.data?.user.token)
             setColaborador(colaborador)
 
-            const resposta = await colaboradorRequest.readArea()
+            const resposta = await colaboradorRequest.readArea(session.data?.user.token)
             setAreaAtuacao(resposta)
 
-            const projetoRes = await projetoRequest.read()
+            const projetoRes = await projetoRequest.read(session.data?.user.token)
             setProjeto(projetoRes)
         }
         readArea()
-    }, [])
+    }, [session])
 
     const novasAreas = areaAtuacao.map(lista => ({ value: lista.id.toString(), label: lista.area_atuacao }));
     const novasProjeto = projeto.map(lista => ({ value: lista.id.toString(), label: lista.nome }));
@@ -73,8 +75,8 @@ const CadastroVinculo = () => {
                 ColaboradorProjeto: ColaboradorProjeto
             }
             
-            await colaboradorRequest.createColaboradorAreaAtuacao(area)
-            await projetoRequest.createProjetoColaborador(projeto)
+            await colaboradorRequest.createColaboradorAreaAtuacao(area, session.data?.user.token)
+            await projetoRequest.createProjetoColaborador(projeto, session.data?.user.token)
 
             Sucesso("Vinculo do colaborador cadastrado com sucesso");
             router.push("/colaborador");

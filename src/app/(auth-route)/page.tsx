@@ -1,15 +1,14 @@
-"use client"
+'use client'
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Loader, LockKeyhole, MailIcon } from "lucide-react"
-import { authService } from "@/service/Auth/authService"
 import { InputControl, InputLabel, InputPrefix, InputRoot, InputRootInside } from "@/components/input"
+import { signIn } from "next-auth/react"
 
 export default function Login() {
-
   const loginCreateNewSchema = z.object({
     email:
       z.string()
@@ -33,8 +32,16 @@ export default function Login() {
   async function handleLogin(data: loginCreateNewData) {
     setIsLoading(true)
     try {
-      await authService.login(data)
-      router.push("/colaborador")
+      const result = await signIn('credentials', {
+        email: data.email,
+        senha: data.senha,
+        redirect: false
+      })
+      if(result?.error){
+        return
+      }
+      router.replace("/colaborador")
+      router.refresh()
     } catch (e) {
       console.log("erro:", e)
       setErrorMessage("email ou senha inválidos")
@@ -44,8 +51,8 @@ export default function Login() {
 
   return (
     <main className="flex h-screen w-full justify-center items-center">
-      <form className="flex flex-col justify-center items-center min-w-[600px] min-h-[500px] bg-cyan-950 rounded-md space-y-5  " onSubmit={handleSubmit(handleLogin)}>
-        <InputRoot className="w-10/12">
+      <form className="flex flex-col justify-center items-center min-w-[600px] min-h-[500px] bg-cyan-950 rounded-md space-y-5" onSubmit={handleSubmit(handleLogin)}>
+         <InputRoot className="w-10/12">
           <InputLabel className="text-white font-semibold text-lg">Email</InputLabel>
           <InputRootInside className="gap-5">
             <InputPrefix>
@@ -62,7 +69,7 @@ export default function Login() {
         </InputRoot>
 
 
-        {formState.errors.email && <span className="text-red-600">{formState.errors.email.message}</span>}
+         {formState.errors.email && <span className="text-red-600">{formState.errors.email.message}</span>}
 
         <InputRoot className="w-10/12">
           <InputLabel className="text-white font-semibold text-lg">Senha</InputLabel>
@@ -79,8 +86,8 @@ export default function Login() {
         </InputRoot>
 
         {formState.errors.senha && <span className="text-red-600">{formState.errors.senha.message}</span>}
-        {errorMessage && <span className="text-red-600">{errorMessage}</span>}
-
+        {errorMessage && <span className="text-red-600">{errorMessage}</span>} 
+     
         <button
           type="submit"
           className={`text-black font-bold ${isLoading
@@ -90,7 +97,7 @@ export default function Login() {
           disabled={isLoading}
         >
           {isLoading ? (
-            <Loader type="TailSpin" color="black" height={27} width={27} className="cursor-not-allowed " />
+              <Loader type="TailSpin" color="black" height={27} width={27} className="cursor-not-allowed " />
           ) : (
             "Login"
           )}
