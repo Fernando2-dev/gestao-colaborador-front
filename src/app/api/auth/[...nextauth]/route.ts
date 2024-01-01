@@ -1,4 +1,4 @@
-import { URL_API, URL_API_PRODUCAO } from "@/utils/constante";
+import { URL_API_PRODUCAO } from "@/utils/constante";
 import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import Credentials from "next-auth/providers/credentials";
