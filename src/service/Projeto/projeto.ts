@@ -1,4 +1,4 @@
-import { URL_API } from "@/utils/constante";
+import { URL_API, URL_API_PRODUCAO } from "@/utils/constante";
 import axios from "axios";
 import { Projeto, ProjetoColaborador, ProjetoColaboradorDelete, ProjetoTecnologia, ProjetoTecnologiaDelete } from "@/interface/projeto";
 import { Tecnologia } from "@/interface/tecnologia";
@@ -7,7 +7,7 @@ import { ProjetoUpdate } from "@/interface/projeto";
 
 export const projetoRequest = {
   async read(token: string | undefined): Promise<Projeto[]> {
-    const resposta = await fetch(`${URL_API}/projeto`, {
+    const resposta = await fetch(`${URL_API_PRODUCAO}/projeto`, {
       headers: {
         "Authorization": `Bearer ${token}`
       },
@@ -19,7 +19,7 @@ export const projetoRequest = {
 
   async readTecnologia(token: string | undefined): Promise<Tecnologia[]> {
     try {
-      const resposta = await fetch(`${URL_API}/projeto/tecnologia`, {
+      const resposta = await fetch(`${URL_API_PRODUCAO}/projeto/tecnologia`, {
         headers: {
           "Authorization": `Bearer ${token}`
         },
@@ -35,7 +35,7 @@ export const projetoRequest = {
   
 
   async readId(id : string,token: string | undefined): Promise<Projeto> {
-    const resposta = await axios.get(`${URL_API}/projeto/${id}`, {
+    const resposta = await axios.get(`${URL_API_PRODUCAO}/projeto/${id}`, {
       headers: {
         "Authorization": `Bearer ${token}`
       }
@@ -45,7 +45,7 @@ export const projetoRequest = {
 
   async create(dados: Projeto, token: string | undefined) {
     try {
-      const resposta = await fetch(`${URL_API}/projeto`, {
+      const resposta = await fetch(`${URL_API_PRODUCAO}/projeto`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -62,7 +62,7 @@ export const projetoRequest = {
     }
   },
   async createProjetoColaborador(dados: ProjetoColaborador, token: string | undefined) {
-    const resposta = await fetch(`${URL_API}/projeto/colaborador`, {
+    const resposta = await fetch(`${URL_API_PRODUCAO}/projeto/colaborador`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -76,7 +76,7 @@ export const projetoRequest = {
   async deleteColaboradorProjeto(dados: ProjetoColaboradorDelete, token: string | undefined) {
     try {
       const resposta = await axios.delete(
-        `${URL_API}/projeto/colaborador`,
+        `${URL_API_PRODUCAO}/projeto/colaborador`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -95,7 +95,7 @@ export const projetoRequest = {
     }
   },
   async createProjetoTecnologia(dados: ProjetoTecnologia, token: string | undefined) {
-    const resposta = await fetch(`${URL_API}/projeto/projetoTecnologia`, {
+    const resposta = await fetch(`${URL_API_PRODUCAO}/projeto/projetoTecnologia`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -108,7 +108,7 @@ export const projetoRequest = {
   async deleteTecnologiaProjeto(dados: ProjetoTecnologiaDelete, token: string | undefined ) {
     try {
       const resposta = await axios.delete(
-        `${URL_API}/projeto/projetoTecnologia`,
+        `${URL_API_PRODUCAO}/projeto/projetoTecnologia`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -127,7 +127,7 @@ export const projetoRequest = {
     }
   },
   async createTecnologia(dados: Tecnologia, token: string | undefined) {
-    const resposta = await fetch(`${URL_API}/projeto/tecnologia`, {
+    const resposta = await fetch(`${URL_API_PRODUCAO}/projeto/tecnologia`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -138,7 +138,7 @@ export const projetoRequest = {
     return resposta
   },
   async update(dados: ProjetoUpdate, token: string | undefined) {
-    const resposta = await fetch(`${URL_API}/projeto/${dados.id}`, {
+    const resposta = await fetch(`${URL_API_PRODUCAO}/projeto/${dados.id}`, {
       method: "PUT",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -150,7 +150,7 @@ export const projetoRequest = {
   },
 
   async delete(id: number, token: string | undefined): Promise<void> {
-    await fetch(`${URL_API}/projeto/${id}`, {
+    await fetch(`${URL_API_PRODUCAO}/projeto/${id}`, {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`
@@ -158,7 +158,7 @@ export const projetoRequest = {
     })
   },
   async deleteTecnologia(id: number, token: string | undefined): Promise<void> {
-    await fetch(`${URL_API}/projeto/tecnologia/${id}`, {
+    await fetch(`${URL_API_PRODUCAO}/projeto/tecnologia/${id}`, {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`

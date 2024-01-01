@@ -19,8 +19,6 @@ export default async function Colaborador() {
   const areaAtuacao = await colaboradorRequest.readArea(token)
   const profile = await colaboradorRequest.readProfile(token)
 
-  
- 
 
   return (
     <>

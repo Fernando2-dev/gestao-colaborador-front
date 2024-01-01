@@ -1,4 +1,4 @@
-import { URL_API } from "@/utils/constante";
+import { URL_API, URL_API_PRODUCAO } from "@/utils/constante";
 import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import Credentials from "next-auth/providers/credentials";
@@ -12,7 +12,7 @@ const nextAuthOptions: NextAuthOptions = {
             senha: {label: 'senha', type: 'password'}
         },
       async authorize(credentials, req) {
-        const res = await fetch(`${URL_API}/auth`, {
+        const res = await fetch(`${URL_API_PRODUCAO}/auth`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

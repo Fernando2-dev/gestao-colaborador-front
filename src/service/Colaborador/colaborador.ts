@@ -1,20 +1,24 @@
-import { URL_API } from "@/utils/constante"
+import { URL_API, URL_API_PRODUCAO } from "@/utils/constante"
 import axios from "axios"
 import { Colaborador, ColaboradorAreaAtuacao, ColaboradorAreaAtuacaoDelete, ColaboradorUpgrade } from "@/interface/colaborador"
 
 
 export const colaboradorRequest = {
-  async readProfile(token: string | undefined){
-      const resposta = await axios.get<Perfil>(`${URL_API}/colaborador/perfil`,{
-          headers: {
-              authorization: `Bearer ${token}`
-          }
-      })
-      return resposta.data  
+  async readProfile(token: string | undefined): Promise<Perfil> {
+    const resposta = await fetch(`${URL_API_PRODUCAO}/colaborador/perfil`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      },
+      cache: "no-store"
+    });
+  
+    const perfil = await resposta.json();
+    return perfil;
   },
+  
   async read(token: string | undefined): Promise<Colaborador[]> {
    
-    const resposta = await fetch(`${URL_API}/colaborador`, {
+    const resposta = await fetch(`${URL_API_PRODUCAO}/colaborador`, {
       headers: {
         "Authorization": `Bearer ${token}`
       },
@@ -26,7 +30,7 @@ export const colaboradorRequest = {
   },
 
   async readArea(token: string | undefined): Promise<AreaAtuacao[]> {
-    const resposta = await fetch(`${URL_API}/colaborador/areaAtuacao`, {
+    const resposta = await fetch(`${URL_API_PRODUCAO}/colaborador/areaAtuacao`, {
       headers: {
         "Authorization": `Bearer ${token}`
       },
@@ -36,7 +40,7 @@ export const colaboradorRequest = {
   },
 
   async createAreaAtuacao(dados: AreaAtuacao, token: string | undefined) {
-    const resposta = await fetch(`${URL_API}/colaborador/areaAtuacao`, {
+    const resposta = await fetch(`${URL_API_PRODUCAO}/colaborador/areaAtuacao`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -48,22 +52,8 @@ export const colaboradorRequest = {
     return resposta;
   },
 
-  async readId(id: number, token: string | undefined): Promise<Colaborador> {
-    
-    try {
-      const response = await axios.get<Colaborador>(`${URL_API}/colaborador/${id}`, {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
   async create(dados: Colaborador, token: string | undefined) {
-    const resposta = await fetch(`${URL_API}/colaborador`, {
+    const resposta = await fetch(`${URL_API_PRODUCAO}/colaborador`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -85,7 +75,7 @@ export const colaboradorRequest = {
    
     try {
       const resposta = await axios.post<ColaboradorAreaAtuacao[]>(
-        `${URL_API}/colaborador/areaAtuacaoColaborador`,
+        `${URL_API_PRODUCAO}/colaborador/areaAtuacaoColaborador`,
         dados, 
         {
           headers: {
@@ -107,7 +97,7 @@ export const colaboradorRequest = {
   async deleteColaboradorAreaAtuacao(dados: ColaboradorAreaAtuacaoDelete, token: string | undefined) {
     try {
       const resposta = await axios.delete(
-        `${URL_API}/colaborador/areaAtuacaoColaborador`,
+        `${URL_API_PRODUCAO}/colaborador/areaAtuacaoColaborador`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -128,7 +118,7 @@ export const colaboradorRequest = {
 
 
   async update(dados: ColaboradorUpgrade, token: string | undefined) {
-    const resposta = await fetch(`${URL_API}/colaborador`, {
+    const resposta = await fetch(`${URL_API_PRODUCAO}/colaborador`, {
       method: "PUT",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -140,7 +130,7 @@ export const colaboradorRequest = {
   },
 
   async delete(id: number, token: string | undefined) {
-    await fetch(`${URL_API}/colaborador/${id}`, {
+    await fetch(`${URL_API_PRODUCAO}/colaborador/${id}`, {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`
@@ -149,7 +139,7 @@ export const colaboradorRequest = {
     },)
   },
   async deleteAreaAtuacao(id: number, token: string | undefined) {
-    await fetch(`${URL_API}/colaborador/areaAtuacao/${id}`, {
+    await fetch(`${URL_API_PRODUCAO}/colaborador/areaAtuacao/${id}`, {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`
