@@ -135,7 +135,13 @@ export const projetoRequest = {
       },
       body: JSON.stringify(dados)
     })
-    return resposta
+    try {
+      const corpoResposta = await resposta.json();
+  
+      return { dados: corpoResposta };
+    } catch (error) {
+      return { resposta };
+    }
   },
   async update(dados: ProjetoUpdate, token: string | undefined) {
     const resposta = await fetch(`${URL_API_PRODUCAO}/projeto/${dados.id}`, {

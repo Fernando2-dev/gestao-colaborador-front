@@ -146,10 +146,10 @@ export const ModalEdicaoColaborador = ({ colaborador, profile }: IModal) => {
     }
     return (
         <Drawer>
-              {profile.user.role === "GESTOR" ?
+            {profile.user.role === "GESTOR" ?
                 (<DrawerTrigger asChild>
                     <PlusCircle className="h-6 w-6 cursor-pointer" />
-                </DrawerTrigger>) : null }
+                </DrawerTrigger>) : null}
             <DrawerContent>
                 <form className="flex flex-col space-y-5 m-16" onSubmit={handleSubmit(handleSubmitColaborador)}>
                     <div className="flex">
@@ -188,55 +188,6 @@ export const ModalEdicaoColaborador = ({ colaborador, profile }: IModal) => {
                         {formState.errors.email &&
                             <span className="text-red-500 ml-5 mt-1 text-xs">
                                 {formState.errors.email.message}
-                            </span>
-                        }
-                    </div>
-                    <div className="flex">
-                        <InputRoot>
-                            <InputLabel>Idade</InputLabel>
-                            <InputRootInside>
-                                <InputControl
-                                    type="text"
-                                    {...register("idade")}
-                                />
-                            </InputRootInside>
-                        </InputRoot>
-
-                        {formState.errors.idade &&
-                            <span className="text-red-500 ml-5 mt-1 text-xs">
-                                {formState.errors.idade.message}
-                            </span>
-                        }
-
-                        <InputRoot>
-                            <InputLabel>Role</InputLabel>
-                            <InputRootInside>
-                                <InputControl
-                                    type="text"
-                                    {...register("role")}
-                                />
-                            </InputRootInside>
-                        </InputRoot>
-
-                        {formState.errors.role &&
-                            <span className="text-red-500 ml-5 mt-1 text-xs">
-                                {formState.errors.role.message}
-                            </span>
-                        }
-
-                        <InputRoot>
-                            <InputLabel>Regime Contratação</InputLabel>
-                            <InputRootInside>
-                                <InputControl
-                                    type="text"
-                                    {...register("regime_contratacao")}
-                                />
-                            </InputRootInside>
-                        </InputRoot>
-
-                        {formState.errors.regime_contratacao &&
-                            <span className="text-red-500 ml-5 mt-1 text-xs">
-                                {formState.errors.regime_contratacao.message}
                             </span>
                         }
                     </div>
@@ -279,6 +230,60 @@ export const ModalEdicaoColaborador = ({ colaborador, profile }: IModal) => {
                             </InputRoot>
                         </div>
                     </div>
+                    <div className="flex">
+                        <InputRoot>
+                            <InputLabel>Idade</InputLabel>
+                            <InputRootInside>
+                                <InputControl
+                                    type="text"
+                                    {...register("idade")}
+                                />
+                            </InputRootInside>
+                        </InputRoot>
+
+                        {formState.errors.idade &&
+                            <span className="text-red-500 ml-5 mt-1 text-xs">
+                                {formState.errors.idade.message}
+                            </span>
+                        }
+
+                        <InputRoot>
+                            <InputLabel>Regime Contratação</InputLabel>
+                            <InputRootInside>
+                                <select
+                                    className="flex w-full items-center gap-2 rounded-lg outline-none"
+                                    {...register("regime_contratacao")}>
+                                    <option value="CLT">CLT</option>
+                                    <option value="PJ">PJ</option>
+                                </select>
+                            </InputRootInside>
+                        </InputRoot>
+
+                        {formState.errors.role &&
+                            <span className="text-red-500 ml-5 mt-1 text-xs">
+                                {formState.errors.role.message}
+                            </span>
+                        }
+
+                        <InputRoot>
+                            <InputLabel>Role</InputLabel>
+                            <InputRootInside>
+                                <select
+                                    className="flex w-full items-center gap-2 outline-none"
+                                    {...register("role")}>
+                                    <option value="MEMBRO">MEMBRO</option>
+                                    <option value="GESTOR">GESTOR</option>
+                                </select>
+                            </InputRootInside>
+                        </InputRoot>
+
+                        {formState.errors.regime_contratacao &&
+                            <span className="text-red-500 ml-5 mt-1 text-xs">
+                                {formState.errors.regime_contratacao.message}
+                            </span>
+                        }
+                    </div>
+
 
 
                     <div className="flex justify-center items-center pb-1">

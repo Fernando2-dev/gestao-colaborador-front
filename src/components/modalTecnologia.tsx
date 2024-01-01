@@ -33,10 +33,11 @@ export const ModalTecnologia= ({ tecnologia }: ITecnologia) => {
 
     const handleCadstroTecnologia = async (data: createNewAreaTecnologia) => {
         try {
-            await projetoRequest.createTecnologia({
+            const {dados} = await projetoRequest.createTecnologia({
                 id: 0,
                 nome_tecnologia: data.nome_tecnologia
             }, session.data?.user.token)
+            setTec(state => [...state,dados.tecnologia])
             Sucesso("Tecnologia cadastrada com sucesso !")
             reset()
         } catch (error) {

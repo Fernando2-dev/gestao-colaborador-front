@@ -31,10 +31,12 @@ export const ModalAreaAtuacao = ({ areaAtuacao }: IAreaAtuacao) => {
 
     const handleCadstroAtuacao = async (data: createNewAreaAtuacao) => {
         try {
-            await colaboradorRequest.createAreaAtuacao({
+          const { dados } = await colaboradorRequest.createAreaAtuacao({
                 id: 0,
                 area_atuacao: data.area_atuacao
             }, session.data?.user.token)
+
+            setAreas(state => [...state, dados.area])
             Sucesso("Area de atuação cadastrada com sucesso !")
             reset()
         } catch (error) {

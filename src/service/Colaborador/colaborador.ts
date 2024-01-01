@@ -1,4 +1,4 @@
-import { URL_API, URL_API_PRODUCAO } from "@/utils/constante"
+import {  URL_API_PRODUCAO } from "@/utils/constante"
 import axios from "axios"
 import { Colaborador, ColaboradorAreaAtuacao, ColaboradorAreaAtuacaoDelete, ColaboradorUpgrade } from "@/interface/colaborador"
 
@@ -49,7 +49,13 @@ export const colaboradorRequest = {
       body: JSON.stringify(dados),
       cache: "no-store"
     })
-    return resposta;
+    try {
+      const corpoResposta = await resposta.json();
+  
+      return { dados: corpoResposta };
+    } catch (error) {
+      return { resposta };
+    }
   },
 
   async create(dados: Colaborador, token: string | undefined) {
