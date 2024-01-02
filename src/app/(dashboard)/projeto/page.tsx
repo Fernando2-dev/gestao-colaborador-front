@@ -13,7 +13,7 @@ export default async function Projeto() {
   const session = await getServerSession(nextAuthOptions)
   const token: string | undefined = session?.user.token;
 
-  const projetos = await projetoRequest.read(token);
+  const projetos = (await projetoRequest.read(token)).sort((a: any, b: any) => a.id - b.id)
   const tecnologia = await projetoRequest.readTecnologia(token)
   const profile = await colaboradorRequest.readProfile(token)
 

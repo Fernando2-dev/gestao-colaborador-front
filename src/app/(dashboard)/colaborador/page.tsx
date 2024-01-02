@@ -15,7 +15,7 @@ export default async function Colaborador() {
   const session = await getServerSession(nextAuthOptions)
   const token: string | undefined = session?.user.token;
 
-  const colaborador = await colaboradorRequest.read(token);
+  const colaborador = (await colaboradorRequest.read(token)).sort((a: any, b: any) => a.id - b.id)
   const areaAtuacao = await colaboradorRequest.readArea(token)
   const profile = await colaboradorRequest.readProfile(token)
 

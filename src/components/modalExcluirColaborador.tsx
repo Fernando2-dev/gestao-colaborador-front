@@ -17,20 +17,23 @@ interface IModal {
 export const ModalExcluirColaborador = ({ colaborador, profile }: IModal) => {
 
 
-    const { Sucesso, Error } = useContext(MensagemContext)
+    const { Sucesso, Error, Aviso } = useContext(MensagemContext)
     const router = useRouter()
     const session = useSession()
 
     const handleDeleteClient = async (id: number) => {
         try {
-            await colaboradorRequest.delete(id, session.data?.user.token)
-            Sucesso("Colaborador deletado com sucesso !")
-            router.refresh()
+            if ((colaborador.ColaboradorProjeto?.length ?? 0) > 0 || (colaborador.areasAtuacaoColaborador?.length ?? 0) > 0) {
+                return Aviso("Colaborador não pode ser deletado. Existe relações com projeto ou área de atuação");
+            }
+        
+            await colaboradorRequest.delete(id, session.data?.user.token);
+            Sucesso("Colaborador deletado com sucesso !");
+            router.refresh();
         } catch (error) {
-            Error("Colaborador não pode ser deletado. pois existe relação com projeto")
-            console.log(error)
+            Error("Erro ao deletar colaborador");
+            console.log(error);
         }
-
     };
     return (
         <Dialog>

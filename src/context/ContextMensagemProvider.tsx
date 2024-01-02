@@ -10,6 +10,7 @@ interface MensagemContextProviderProps{
 interface MensagemContextProps {
   Sucesso: (text: string) => void
   Error: (text: string) => void
+  Aviso: (text: string) => void
 }
 
 export const MensagemContext = createContext({} as MensagemContextProps)
@@ -29,6 +30,12 @@ export const MensagemContextProvider = ({children} : MensagemContextProviderProp
       position: toast.POSITION.BOTTOM_RIGHT
     })
   }
+  const Aviso = (text:string) => {
+    toast.warning(text, {
+      theme: "light",
+      position: toast.POSITION.BOTTOM_RIGHT
+    })
+  }
 
   
  return(
@@ -36,6 +43,7 @@ export const MensagemContextProvider = ({children} : MensagemContextProviderProp
   value={{
     Sucesso,
     Error,  
+    Aviso
     }}>
     {children}
   </MensagemContext.Provider>
