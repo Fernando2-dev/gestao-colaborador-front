@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -25,7 +25,7 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false)
 
-  const { register, handleSubmit, formState } = useForm<loginCreateNewData>({
+  const { register, handleSubmit, formState, reset } = useForm<loginCreateNewData>({
     resolver: zodResolver(loginCreateNewSchema)
   })
 
@@ -37,8 +37,10 @@ export default function Login() {
         senha: data.senha,
         redirect: false
       })
-      if(result?.error){
-        return
+      if (result?.error) {
+        setErrorMessage("Email ou senha inválidos");
+        reset()
+        redirect('/')
       }
       router.replace("/colaborador")
       router.refresh()

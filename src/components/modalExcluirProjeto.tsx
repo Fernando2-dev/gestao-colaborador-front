@@ -21,7 +21,7 @@ export const ModalExcluirProjeto = ({ projeto, profile }: IModal) => {
     const handleDeleteProjeto = async (id: number) => {
         try {
             if ((projeto.ColaboradorProjeto?.length ?? 0) > 0 || (projeto.projetoTecnologias?.length ?? 0) > 0) {
-                return Aviso("Colaborador não pode ser deletado. Existe relações com colaborador ou tecnologia");
+                return Aviso("Projeto não pode ser deletado. Existe relações com colaborador ou tecnologia");
             }
             await projetoRequest.delete(id, session.data?.user.token);
             Sucesso("Projeto deletado com sucesso !");
