@@ -40,9 +40,9 @@ export const Sidebar = async () => {
                     alt=""
                 />
                 <div className="flex flex-1 flex-col truncate">
-                    <span className="text-sm font-semibold text-zinc-700">{profile?.user.nome}</span>
-                    <span className="truncate text-sm text-zinc-500 ">{profile?.user.role}</span>
-                    <span className="truncate text-sm text-zinc-500 ">{profile?.user.email}</span>
+                    <span className="text-sm font-semibold text-zinc-700">{profile.user?.nome}</span>
+                    <span className="truncate text-sm text-zinc-500 ">{profile.user?.role}</span>
+                    <span className="truncate text-sm text-zinc-500 ">{profile.user?.email}</span>
                 </div>
                 <ButtonLogout />
             </div>

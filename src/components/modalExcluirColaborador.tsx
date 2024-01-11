@@ -39,8 +39,8 @@ export const ModalExcluirColaborador = ({ colaborador }: IModal) => {
 
     return (
         <Dialog>
-            <DialogTrigger disabled={profile?.user.role === "GESTOR" ? false : true}>
-                <XCircle className={`h-6 w-6 text-red-500 cursor-pointer ${profile?.user.role === "GESTOR" ? "" : "hover:cursor-not-allowed"}`}/>
+            <DialogTrigger disabled={profile.user?.role === "GESTOR" ? false : true}>
+                <XCircle className={`h-6 w-6 text-red-500 cursor-pointer ${profile.user?.role === "GESTOR" ? "" : "hover:cursor-not-allowed"}`}/>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader className="font-semibold">Tem certeza que deseja excluir esse colaborador ?</DialogHeader>

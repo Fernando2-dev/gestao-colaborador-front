@@ -34,7 +34,7 @@ export const ModalExcluirProjeto = ({ projeto, profile }: IModal) => {
 
     return (
         <Dialog>
-            {profile?.user.role === "GESTOR" ? (
+            {profile.user?.role === "GESTOR" ? (
                 <DialogTrigger asChild>
                     <XCircle className="h-6 w-6 text-red-500 cursor-pointer" />
                 </DialogTrigger>

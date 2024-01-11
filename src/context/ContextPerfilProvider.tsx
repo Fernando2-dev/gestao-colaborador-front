@@ -8,13 +8,13 @@ interface PerfilContextProviderProps {
 }
 
 interface PerfilContextProps {
-    profile: Perfil | undefined;
+    profile: Perfil;
 }
 
 export const PerfilContext = createContext({} as PerfilContextProps);
 
 const PerfilContextProvider = ({ children }: PerfilContextProviderProps) => {
-    const [profile, setProfile] = useState<Perfil | undefined>(undefined);
+    const [profile, setProfile] = useState<Perfil>({});
     const session = useSession()
 
     useEffect(() => {

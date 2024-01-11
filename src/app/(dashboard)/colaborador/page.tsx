@@ -28,7 +28,7 @@ export default async function Colaborador() {
             <h2 className="text-lg font-medium text-zinc-700">Perfil de todos os colaboradores</h2>
             <span className="text-sm font-medium text-zinc-500">acompanhe mais informações nas tabelas seguintes</span>
           </div>
-          {profile.user.role === "GESTOR" ? (
+          {profile.user?.role === "GESTOR" ? (
             <div className="flex items-center gap-2">
               <ModalAreaAtuacao areaAtuacao={areaAtuacao} />
               <Link href="/colaborador/cadastroColaborador">

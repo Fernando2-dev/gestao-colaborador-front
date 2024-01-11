@@ -8,8 +8,6 @@ import { Colaborador } from "@/interface/colaborador";
 import { InputControl, InputLabel, InputPrefix, InputRoot, InputRootInside } from "./input";
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Eye, Mail, User } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { colaboradorRequest } from "@/service/Colaborador/colaborador";
 import { PerfilContext } from "@/context/ContextPerfilProvider";
 
 interface IModal {
@@ -102,7 +100,7 @@ export const ModalVisualizacaoColaborador = ({ colaborador }: IModal) => {
                         <InputRoot>
                             <InputLabel>Regime Contratação</InputLabel>
                             <InputRootInside>
-                                {profile?.user.role === "GESTOR" ? (<InputControl
+                                {profile.user?.role === "GESTOR" ? (<InputControl
                                     type="text"
                                     {...register("regime_contratacao")}
                                     disabled
