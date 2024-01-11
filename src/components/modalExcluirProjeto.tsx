@@ -7,14 +7,15 @@ import { useRouter } from "next/navigation";
 import { Projeto } from "@/interface/projeto";
 import { projetoRequest } from "@/service/Projeto/projeto";
 import { useSession } from "next-auth/react";
+import { PerfilContext } from "@/context/ContextPerfilProvider";
 
 interface IModal {
     projeto: Projeto;
-    profile: Perfil
 }
 
-export const ModalExcluirProjeto = ({ projeto, profile }: IModal) => {
+export const ModalExcluirProjeto = ({ projeto }: IModal) => {
     const { Sucesso, Error, Aviso } = useContext(MensagemContext);
+    const { profile } = useContext(PerfilContext);
     const router = useRouter();
     const session = useSession()
 

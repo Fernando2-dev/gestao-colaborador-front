@@ -8,6 +8,8 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { columns } from "./column";
+import { DataTable } from "@/components/data-table";
 
 export default async function Projeto() {
   const session = await getServerSession(nextAuthOptions)
@@ -33,65 +35,7 @@ export default async function Projeto() {
             </Link>
           </div>) : null}
         </div>
-        <div className="shadow-md p-12 mt-4">
-          <table className="w-full border-zinc-100 rounded-lg bg-white">
-            <thead className="bg-violet-200">
-              <tr className="">
-                <th className="text-left py-4 px-5 border-b text-black">Nome</th>
-                <th className="text-left py-4 px-5 border-b text-black">Prazo</th>
-                <th className="text-left py-4 px-5 border-b text-black">Descrição</th>
-                <th className="text-left py-4 px-5 border-b text-black">Tecnologia</th>
-                <th className="text-left py-4 px-5 border-b text-black">Colaborador</th>
-                <th className="text-left py-4 px-5 border-b text-black">Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              {projetos.map((projeto, index) => (
-                <tr className="hover:bg-gray-100" key={projeto.id}>
-                  <td className="py-4 px-5 border-b text-black font-semibold">{projeto.nome}</td>
-                  <td className="py-4 px-5 border-b text-zinc-500">{projeto.prazo}</td>
-                  <td className="py-4 px-5 border-b text-zinc-500">{projeto.descricao}</td>
-                  <td className="py-4 px-5 border-b text-zinc-500">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <button type="button" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm border border-violet-400 text-black" form="setting">Tecnologias</button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader className="font-semibold">Tecnologias associadas</DialogHeader>
-                        {projeto.projetoTecnologias?.map((tec) => (
-                          <div key={tec.tecnologia_id}>
-                            <div className="p-3 border border-emerald-300 rounded-lg">{tec.id_tecnologia.nome_tecnologia}</div>
-                          </div>
-                        ))}
-                      </DialogContent>
-                    </Dialog>
-                  </td>
-                  <td className="py-4 px-5 border-b text-zinc-500">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-500 text-white" form="setting">Colaborador</button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader className="font-semibold">Colaboradores associados</DialogHeader>
-                        {projeto.ColaboradorProjeto?.map((colaborador) => (
-                          <div key={colaborador.colaborador_id}>
-                            <div className="p-3 border border-emerald-300 rounded-lg">
-                              {colaborador.id_colaborador.nome}
-                            </div>
-                          </div>
-                        ))}
-                      </DialogContent>
-                    </Dialog>
-                  </td>
-                  <td className="py-4 px-5 border-b text-zinc-500">
-                    <ModaisProjeto projeto={projeto} index={index} key={projeto.id} profile={profile} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-        </div>
+        <DataTable columns={columns} data={projetos}/>
       </div>
       <ToastContainer autoClose={3000} />
     </>

@@ -50,7 +50,7 @@ const Cadastro = () => {
         setTecnologia(respostaTecnologia)
       }
       read()
-    }, [])
+    }, [session.data?.user.token])
   
     const novosColaboradores = colaborador.map(lista => ({ value: lista.id.toString(), label: lista.nome }));
     const novasTecnologias = tecnologia.map(lista => ({ value: lista.id.toString(), label: lista.nome_tecnologia }));

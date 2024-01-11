@@ -12,7 +12,6 @@ import { ProjetoSchema } from "@/validacao/validacaoProjeto";
 
 interface IModal {
     projeto: Projeto;
-    index: number
 }
 
 export const ModalVisualizacaoProjeto = ({ projeto }: IModal) => {

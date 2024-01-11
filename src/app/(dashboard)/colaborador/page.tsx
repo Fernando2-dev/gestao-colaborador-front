@@ -4,10 +4,10 @@ import { ModalAreaAtuacao } from "@/components/modalAreaAtuacao";
 import { Colaborador } from "@/interface/colaborador";
 import { ToastContainer } from "react-toastify";
 import { getServerSession } from "next-auth";
-import { DataTable } from "./data-table";
 import Link from "next/link";
 import "react-toastify/dist/ReactToastify.css";
 import { columns } from "./column";
+import { DataTable } from "@/components/data-table";
 
 
 

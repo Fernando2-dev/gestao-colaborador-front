@@ -7,16 +7,14 @@ import { ModalEdicaoProjeto } from "./modalEdicaoProjeto";
 
 interface IModal {
     projeto: Projeto;
-    profile: Perfil
-    index: number
 }
 
-export const ModaisProjeto = ({ projeto, index, profile }: IModal) => {
+export const ModaisProjeto = ({ projeto }: IModal) => {
     return (
-        <div className="flex gap-2 items-center"> 
-            <ModalVisualizacaoProjeto projeto={projeto} index={index} />
+        <div className="flex gap-2 items-center justify-center"> 
+            <ModalVisualizacaoProjeto projeto={projeto} />
             <ModalEdicaoProjeto projeto={projeto}  />
-            <ModalExcluirProjeto  projeto={projeto} profile={profile}/> 
+            <ModalExcluirProjeto  projeto={projeto} /> 
         </div>
     )
 }
