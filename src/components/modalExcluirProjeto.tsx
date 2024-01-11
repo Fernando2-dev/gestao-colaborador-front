@@ -1,5 +1,5 @@
 "use client"
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "./ui/dialog";
 import { XCircle } from "lucide-react";
 import { MensagemContext } from "@/context/ContextMensagemProvider";
@@ -34,7 +34,7 @@ export const ModalExcluirProjeto = ({ projeto, profile }: IModal) => {
 
     return (
         <Dialog>
-            {profile.user.role === "GESTOR" ? (
+            {profile?.user?.role === "GESTOR" ? (
                 <DialogTrigger asChild>
                     <XCircle className="h-6 w-6 text-red-500 cursor-pointer" />
                 </DialogTrigger>

@@ -16,12 +16,11 @@ import makeAnimated from "react-select/animated"
 import { Projeto, ProjetoColaborador, ProjetoColaboradorDelete } from "@/interface/projeto";
 import { projetoRequest } from "@/service/Projeto/projeto";
 import { useSession } from "next-auth/react";
+import { PerfilContext } from "@/context/ContextPerfilProvider";
 
 
 interface IModal {
     colaborador: Colaborador;
-    profile: Perfil
-    index: number
 }
 
 interface IMultiValue {
@@ -30,7 +29,7 @@ interface IMultiValue {
 }
 
 
-export const ModalEdicaoColaborador = ({ colaborador, profile }: IModal) => {
+export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
 
     type colaboradorSchemaUpgrade = z.infer<typeof ColaboradorSchemaUpgrade>
 
@@ -47,6 +46,7 @@ export const ModalEdicaoColaborador = ({ colaborador, profile }: IModal) => {
     })
 
     const { Sucesso, Error } = useContext(MensagemContext)
+    const { profile } = useContext(PerfilContext)
 
 
     const [areaAtuacao, setAreaAtuacao] = useState<AreaAtuacao[]>([])
@@ -55,6 +55,7 @@ export const ModalEdicaoColaborador = ({ colaborador, profile }: IModal) => {
     const [projetoColaborador, setProjetoColaborador] = useState<IMultiValue[]>([])
     const makeComponent = makeAnimated()
     const session = useSession()
+
 
     useEffect(() => {
 
@@ -146,10 +147,9 @@ export const ModalEdicaoColaborador = ({ colaborador, profile }: IModal) => {
     }
     return (
         <Drawer>
-            {profile.user.role === "GESTOR" ?
-                (<DrawerTrigger asChild>
-                    <PlusCircle className="h-6 w-6 cursor-pointer" />
-                </DrawerTrigger>) : null}
+            <DrawerTrigger disabled={profile.user?.role === "MEMBRO"}>
+                <PlusCircle className={`h-6 w-6 cursor-pointer ${profile?.user?.role === "GESTOR" ? "" : "hover:cursor-not-allowed"}`} />
+            </DrawerTrigger>
             <DrawerContent>
                 <form className="flex flex-col space-y-5 m-16" onSubmit={handleSubmit(handleSubmitColaborador)}>
                     <div className="flex">

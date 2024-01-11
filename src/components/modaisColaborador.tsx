@@ -6,16 +6,14 @@ import { ModalExcluirColaborador } from "./modalExcluirColaborador";
 
 interface IModal {
     colaborador: Colaborador;
-    profile: Perfil
-    index: number
 }
 
-export const ModaisColaborador = ({ colaborador, index, profile }: IModal) => {
+export const ModaisColaborador = ({ colaborador}: IModal) => {
     return (
-        <div className="flex gap-2 items-center"> 
-            <ModalVisualizacaoColaborador colaborador={colaborador} index={index} profile={profile}/>
-            <ModalEdicaoColaborador colaborador={colaborador} index={index} profile={profile}/>
-            <ModalExcluirColaborador colaborador={colaborador} index={index} profile={profile}/>
+        <div className="flex gap-2 items-center justify-center"> 
+            <ModalVisualizacaoColaborador colaborador={colaborador} />
+            <ModalEdicaoColaborador colaborador={colaborador} />
+            <ModalExcluirColaborador colaborador={colaborador} />
         </div>
     )
 }

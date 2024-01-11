@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, } from "react";
+import { useContext, useEffect, useState, } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -9,14 +9,14 @@ import { InputControl, InputLabel, InputPrefix, InputRoot, InputRootInside } fro
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Eye, Mail, User } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { colaboradorRequest } from "@/service/Colaborador/colaborador";
+import { PerfilContext } from "@/context/ContextPerfilProvider";
 
 interface IModal {
     colaborador: Colaborador;
-    profile: Perfil
-    index: number
 }
 
-export const ModalVisualizacaoColaborador = ({ colaborador, profile }: IModal) => {
+export const ModalVisualizacaoColaborador = ({ colaborador }: IModal) => {
     type Colaborador = z.infer<typeof ColaboradorSchema>
     const { register, setValue } = useForm<Colaborador>({
         resolver: zodResolver(ColaboradorSchema),
@@ -36,6 +36,8 @@ export const ModalVisualizacaoColaborador = ({ colaborador, profile }: IModal) =
         setValue("role", colaborador.role);
         setValue("regime_contratacao", colaborador.regime_contratacao);
     }, [colaborador, setValue]);
+   const { profile } = useContext(PerfilContext)
+    
 
     return (
         <Drawer>
@@ -100,7 +102,7 @@ export const ModalVisualizacaoColaborador = ({ colaborador, profile }: IModal) =
                         <InputRoot>
                             <InputLabel>Regime Contratação</InputLabel>
                             <InputRootInside>
-                                {profile.user.role === "GESTOR" ? (<InputControl
+                                {profile.user?.role === "GESTOR" ? (<InputControl
                                     type="text"
                                     {...register("regime_contratacao")}
                                     disabled
