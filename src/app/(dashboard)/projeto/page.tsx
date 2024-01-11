@@ -26,7 +26,7 @@ export default async function Projeto() {
             <h2 className="text-lg font-medium text-zinc-700">Dados dos projetos</h2>
             <span className="text-sm font-medium text-zinc-500">Acompanhe mais informações nas tabelas seguintes</span>
           </div>
-          {profile?.user?.role === "GESTOR" ? (<div className="flex items-center gap-2">
+          {profile.user.role === "GESTOR" ? (<div className="flex items-center gap-2">
             <ModalTecnologia tecnologia={tecnologia} />
             <Link href="/projeto/cadastro">
               <button type="submit" className="rounded-lg px-4 py-2 text-sm font-semibold shadow-sm bg-violet-700 text-white" form="setting">Cadastrar Projeto</button>

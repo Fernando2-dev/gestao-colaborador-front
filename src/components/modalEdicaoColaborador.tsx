@@ -147,8 +147,8 @@ export const ModalEdicaoColaborador = ({ colaborador }: IModal) => {
     }
     return (
         <Drawer>
-            <DrawerTrigger disabled={profile.user?.role === "MEMBRO"}>
-                <PlusCircle className={`h-6 w-6 cursor-pointer ${profile?.user?.role === "GESTOR" ? "" : "hover:cursor-not-allowed"}`} />
+            <DrawerTrigger disabled={profile?.user.role === "MEMBRO"}>
+                <PlusCircle className={`h-6 w-6 cursor-pointer ${profile?.user.role === "GESTOR" ? "" : "hover:cursor-not-allowed"}`} />
             </DrawerTrigger>
             <DrawerContent>
                 <form className="flex flex-col space-y-5 m-16" onSubmit={handleSubmit(handleSubmitColaborador)}>

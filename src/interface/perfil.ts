@@ -1,5 +1,5 @@
 interface Perfil {
-    user?: {
+    user: {
         id: number,
         nome: string,
         email: string,

@@ -102,7 +102,7 @@ export const ModalVisualizacaoColaborador = ({ colaborador }: IModal) => {
                         <InputRoot>
                             <InputLabel>Regime Contratação</InputLabel>
                             <InputRootInside>
-                                {profile.user?.role === "GESTOR" ? (<InputControl
+                                {profile?.user.role === "GESTOR" ? (<InputControl
                                     type="text"
                                     {...register("regime_contratacao")}
                                     disabled
