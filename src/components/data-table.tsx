@@ -29,10 +29,10 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
-    
 
-    const [filter, setFilter] = useState<ColumnFiltersState>([])
+
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+    const [globalFilter, setGlobalFilter] = useState<string>("");
 
     const table = useReactTable({
         data,
@@ -41,14 +41,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         getPaginationRowModel: getPaginationRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
 
-        onColumnFiltersChange: setFilter,
         onColumnVisibilityChange: setColumnVisibility,
+        onGlobalFilterChange: setGlobalFilter,
         state: {
-            columnFilters: filter,
+            globalFilter: globalFilter,
             columnVisibility: columnVisibility
         }
     })
-
     return (
         <div>
             <div>
@@ -63,9 +62,10 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                                 className="placeholder:text-gray-400"
                                 type="text"
                                 placeholder="pesquise..."
-                                value={table.getColumn("email")?.getFilterValue() as string || ""}
-                                onChange={e => {
-                                    table.getColumn("email")?.setFilterValue(e.target.value)
+                                value={globalFilter || ""}
+                                onChange={e => { 
+                                    setGlobalFilter(e.target.value);
+                                    table.setGlobalFilter(e.target.value);
                                 }}
                             />
                         </InputRootInside>
@@ -140,7 +140,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             </div>
             <div className="flex items-center justify-end gap-2 w-full mt-1">
                 <select
-                className="border rounded-sm focus:outline-none text-sm text-muted-foreground" 
+                    className="border rounded-sm focus:outline-none text-sm text-muted-foreground"
                     value={table.getState().pagination.pageSize}
                     onChange={e => {
                         table.setPageSize(Number(e.target.value))
@@ -174,7 +174,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                 >
                     <ChevronLeft className="h-4 w-4" />
                 </button>
-                
+
                 <button
                     className="hover:cursor-pointer bg-gray-200 rounded-full p-2"
                     onClick={() => table.nextPage()}
